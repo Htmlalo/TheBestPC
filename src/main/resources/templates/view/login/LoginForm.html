@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TB PC STORE - Đăng nhập/Đăng ký</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(120deg, #1a1a1a, #2d2d2d);
+      padding: 20px;
+    }
+
+    .container {
+      position: relative;
+      width: 100%;
+      max-width: 850px;
+      background: #fff;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      border-radius: 20px;
+    }
+
+    .forms-container {
+      position: relative;
+      width: 100%;
+      height: 600px;
+    }
+
+    .signin-signup {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.7s ease-in-out;
+    }
+
+    form {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 40px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .title {
+      font-size: 2.2rem;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .input-field {
+      width: 100%;
+      height: 55px;
+      background-color: #f0f0f0;
+      margin: 10px 0;
+      border-radius: 55px;
+      display: flex;
+      padding: 0 20px;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .input-field input {
+      width: 100%;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: 1.1rem;
+      color: #333;
+      padding: 15px;
+    }
+
+    .input-field:focus-within {
+      background-color: #e8e8e8;
+    }
+
+    .btn {
+      width: 150px;
+      height: 49px;
+      border: none;
+      outline: none;
+      border-radius: 49px;
+      cursor: pointer;
+      background-color: #4d4d4d;
+      color: #fff;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin: 10px 0;
+      transition: 0.5s;
+    }
+
+    .btn:hover {
+      background-color: #2d2d2d;
+    }
+
+    .social-text {
+      padding: 20px 0;
+      font-size: 1rem;
+      color: #444;
+    }
+
+    .social-media {
+      display: flex;
+      justify-content: center;
+    }
+
+    .social-icon {
+      height: 45px;
+      width: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #444;
+      border: 1px solid #444;
+      border-radius: 50%;
+      margin: 0 5px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .social-icon:hover {
+      color: #2d2d2d;
+      border-color: #2d2d2d;
+    }
+
+    .toggle-container {
+      text-align: center;
+      padding: 20px 0;
+    }
+
+    .toggle-btn {
+      background: none;
+      border: none;
+      color: #4d4d4d;
+      font-size: 0.9rem;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    #register-form {
+      display: none;
+    }
+
+    .error-message {
+      color: #ff3333;
+      font-size: 0.9rem;
+      margin-top: 5px;
+    }
+
+    @media (max-width: 570px) {
+      form {
+        padding: 0 20px;
+      }
+
+      .title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="forms-container">
+    <div class="signin-signup">
+      <!-- Đăng nhập form -->
+      <form action="#" class="sign-in-form" id="login-form">
+        <h2 class="title">Đăng nhập</h2>
+        <div class="input-field">
+          <input type="email" placeholder="Email" required>
+        </div>
+        <div class="input-field">
+          <input type="password" placeholder="Mật khẩu" required>
+        </div>
+        <input type="submit" value="Đăng nhập" class="btn">
+        <p class="social-text">Hoặc đăng nhập với</p>
+        <div class="social-media">
+          <a href="#" class="social-icon">
+            <i class="fab">G</i>
+          </a>
+        </div>
+      </form>
+
+      <!-- Đăng ký form -->
+      <form action="#" class="sign-up-form" id="register-form">
+        <h2 class="title">Đăng ký</h2>
+        <div class="input-field">
+          <input type="text" placeholder="Họ và tên" required>
+        </div>
+        <div class="input-field">
+          <input type="email" placeholder="Email" required>
+        </div>
+        <div class="input-field">
+          <input type="password" placeholder="Mật khẩu" required>
+        </div>
+        <input type="submit" value="Đăng ký" class="btn">
+        <p class="social-text">Hoặc đăng ký với</p>
+        <div class="social-media">
+          <a href="#" class="social-icon">
+            <i class="fab">G</i>
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toggle-container">
+    <button class="toggle-btn" onclick="toggleForms()">
+      <span id="toggle-text">Chưa có tài khoản? Đăng ký ngay</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  function toggleForms() {
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const toggleText = document.getElementById('toggle-text');
+
+    if (loginForm.style.display !== 'none') {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'flex';
+      toggleText.textContent = 'Đã có tài khoản? Đăng nhập ngay';
+    } else {
+      loginForm.style.display = 'flex';
+      registerForm.style.display = 'none';
+      toggleText.textContent = 'Chưa có tài khoản? Đăng ký ngay';
+    }
+  }
+
+  // Xử lý form đăng nhập
+  document.querySelector('.sign-in-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Xử lý logic đăng nhập ở đây
+  });
+
+  // Xử lý form đăng ký
+  document.querySelector('.sign-up-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    // Xử lý logic đăng ký ở đây
+  });
+</script>
+</body>
+</html>

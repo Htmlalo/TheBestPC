@@ -1,0 +1,40 @@
+server:
+  port: 9090
+  servlet:
+    context-path: /TheBestPc
+
+spring:
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    enabled: true
+    mode: HTML
+    cache: false
+  web:
+    resources:
+      static-locations: classpath:/static/
+  datasource:
+    url: jdbc:sqlserver://localhost:1433;database=TheBestPC;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: Vanthuat2511*
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 120696813558-f1g8mco4dccteu5qtt8rcpveacrpns1c.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - email
+              - profile
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
