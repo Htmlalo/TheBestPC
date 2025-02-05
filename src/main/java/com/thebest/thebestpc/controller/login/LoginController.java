@@ -1,4 +1,4 @@
-package com.thebest.thebestpc.controller;
+package com.thebest.thebestpc.controller.login;
 
 import com.thebest.thebestpc.dto.UserCreateDto;
 import com.thebest.thebestpc.model.Users;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
+
 public class LoginController {
 
     UsersService usersService;
@@ -31,7 +32,7 @@ public class LoginController {
         if (users != null && users.getPassword().equals(userCreateDto.getPassword())) {
             return "redirect:/";
         }
-        return "view/TheBestHom";
+        return "view/HomeForm";
     }
 
     @PostMapping("/register")

@@ -1,7 +1,6 @@
-package com.thebest.thebestpc.controller;
+package com.thebest.thebestpc.controller.account;
 
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
@@ -10,10 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class Home {
+public class AccountController {
 
-    @GetMapping("/")
-    public String home() {
-        return "view/HomeForm";
+    @GetMapping("/account")
+    public String accountView() {
+        return "view/account/InformationAccountForm";
     }
 }

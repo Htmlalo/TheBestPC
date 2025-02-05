@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thông tin tài khoản - TB PC STORE</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    /* Header */
+    header {
+      background: #1a1a1a;
+      padding: 20px 5%;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navheader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      color: white;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #00ff87;
+    }
+    /* Banner styles from CartForm.html */
+    .welcome-banner {
+      height: 50vh;
+      background: linear-gradient(45deg, #1a1a1a, #2d3436);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-content {
+      text-align: center;
+      color: white;
+      z-index: 2;
+    }
+
+    .welcome-title {
+      font-size: 3em;
+      margin-bottom: 20px;
+      animation: fadeInUp 1s ease;
+    }
+
+    /* Layout */
+    .account-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 30px;
+    }
+
+    /* Sidebar Navigation */
+    .account-nav {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 20px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 15px;
+      color: #666;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: all 0.3s;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: #f5f5f5;
+      color: #00ff87;
+    }
+
+    /* Content Area */
+    .content-area {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .content-title {
+      font-size: 1.5em;
+      color: #1a1a1a;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #666;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    .form-input:focus {
+      border-color: #00ff87;
+      outline: none;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(45deg, #00ff87, #60efff);
+      color: #1a1a1a;
+    }
+
+    /* Address Cards */
+    .address-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .address-card {
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      padding: 20px;
+      position: relative;
+    }
+
+    .address-card.default {
+      border-color: #00ff87;
+    }
+
+    .default-badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #00ff87;
+      color: #1a1a1a;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-size: 0.8em;
+    }
+
+    .address-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .account-container {
+        grid-template-columns: 1fr;
+      }
+
+      .account-nav {
+        display: flex;
+        overflow-x: auto;
+        padding: 10px;
+      }
+
+      .nav-item {
+        white-space: nowrap;
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+<!-- Banner -->
+<div class="welcome-banner">
+  <div class="welcome-content">
+    <h1 class="welcome-title" th:text="${pageTitle}">Thông tin tài khoản</h1>
+  </div>
+</div>
+<header>
+  <div class="navheader">
+
+    <div class="logo">TB PC STORE</div>
+    <div class="nav-links">
+      <a href="#"><i class="fas fa-search"></i> Tìm kiếm</a>
+      <a href="/TheBestPc/cart"><i class="fas fa-clipboard-list"></i> Tra cứu đơn hàng</a>
+      <a href="/TheBestPc/cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
+      <a href="/TheBestPc/account"><i class="fas fa-user"></i> Tài khoản</a>
+    </div>
+
+  </div>
+</header>
+<div class="account-container">
+  <!-- Sidebar Navigation -->
+  <nav class="account-nav">
+    <a href="#" class="nav-item active" data-section="account-info">
+      <i class="fas fa-user"></i>
+      <span>Thông tin tài khoản</span>
+    </a>
+    <a href="#" class="nav-item" data-section="addresses">
+      <i class="fas fa-map-marker-alt"></i>
+      <span>Sổ địa chỉ</span>
+    </a>
+    <a href="#" class="nav-item" data-section="orders">
+      <i class="fas fa-shopping-bag"></i>
+      <span>Quản lý đơn hàng</span>
+    </a>
+    <a href="#" class="nav-item" data-section="viewed">
+      <i class="fas fa-eye"></i>
+      <span>Sản phẩm đã xem</span>
+    </a>
+    <a href="#" class="nav-item" data-section="logout">
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Đăng xuất</span>
+    </a>
+  </nav>
+
+  <!-- Content Area -->
+  <div class="content-area">
+    <!-- Account Info Section -->
+    <div class="content-section" id="account-info">
+      <div class="content-header">
+        <h2 class="content-title">Thông tin tài khoản</h2>
+        <button class="btn btn-primary">Lưu thay đổi</button>
+      </div>
+<!--      <form th:object="${userProfile}">-->
+<!--        <div class="form-group">-->
+<!--          <label class="form-label">Họ và tên</label>-->
+<!--          <input type="text" class="form-input" th:field="*{fullName}" value="Trinh Van Thuat 19.">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <label class="form-label">Số điện thoại</label>-->
+<!--          <input type="tel" class="form-input" th:field="*{phone}" value="0913330175">-->
+<!--        </div>-->
+<!--        <div class="form-group">-->
+<!--          <label class="form-label">Email</label>-->
+<!--          <input type="email" class="form-input" th:field="*{email}">-->
+<!--        </div>-->
+<!--      </form>-->
+
+      <form th:object="${userProfile}">
+        <div class="form-group">
+          <label class="form-label">Họ và tên</label>
+          <input type="text" class="form-input"  value="Trinh Van Thuat 19.">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Số điện thoại</label>
+          <input type="tel" class="form-input"  value="0913330175">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" >
+        </div>
+      </form>
+    </div>
+
+    <!-- Addresses Section -->
+    <div class="content-section" id="addresses" style="display: none;">
+      <div class="content-header">
+        <h2 class="content-title">Sổ địa chỉ</h2>
+        <button class="btn btn-primary">+ Thêm địa chỉ mới</button>
+      </div>
+      <div class="address-grid">
+        <div class="address-card default">
+          <span class="default-badge">Mặc định</span>
+          <p>Xã Ea Kênh, Huyện Krông Pắc, Đắk Lắk, Vietnam</p>
+          <div class="address-actions">
+            <button class="btn">Sửa</button>
+            <button class="btn">Xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Other sections would be added similarly -->
+  </div>
+</div>
+
+<script>
+  // Navigation handling
+  document.querySelectorAll('.nav-item').forEach(item => {
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+
+      // Update active state
+      document.querySelectorAll('.nav-item').forEach(nav => {
+        nav.classList.remove('active');
+      });
+      item.classList.add('active');
+
+      // Show corresponding section
+      const sectionId = item.getAttribute('data-section');
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.style.display = 'none';
+      });
+      document.getElementById(sectionId).style.display = 'block';
+
+      // Update banner title
+      const title = item.querySelector('span').textContent;
+      document.querySelector('.welcome-title').textContent = title;
+    });
+  });
+</script>
+</body>
+</html>
