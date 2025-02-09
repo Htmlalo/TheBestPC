@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PC Gaming Store</title>
-    
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         * {
@@ -59,6 +59,98 @@
             transform: scale(1.05);
         }
 
+        /* Category Menu */
+        .category-menu {
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .category-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 1em;
+        }
+
+        .category-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #1a1a1a;
+            border-radius: 5px;
+            width: 250px;
+            padding: 10px 0;
+            display: none;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+        }
+
+        .category-list.active {
+            display: block;
+        }
+
+        .category-list a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s;
+            gap: 10px;
+        }
+
+        .category-list a:hover {
+            background: #333;
+            color: #00ff87;
+        }
+
+        .category-list i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .search-bar {
+            padding: 10px 15px;
+            border-radius: 20px;
+            border: 1px solid #333;
+            width: 300px;
+            background: #333;
+            color: white;
+            transition: all 0.3s;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            background: #444;
+            border-color: #00ff87;
+        }
+
+        .search-btn {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 10px;
+            transition: color 0.3s;
+        }
+
+        .search-btn:hover {
+            color: #00ff87;
+        }
+
         /* Animated Background */
         .particles {
             position: absolute;
@@ -86,8 +178,21 @@
 
         nav {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            gap: 30px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            margin-left: auto;
         }
 
         .logo {
@@ -96,12 +201,7 @@
             font-weight: bold;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 30px;
-        }
-
-        .nav-links a {
+        .nav-right a {
             color: white;
             text-decoration: none;
             display: flex;
@@ -110,7 +210,7 @@
             transition: color 0.3s;
         }
 
-        .nav-links a:hover {
+        .nav-right a:hover {
             color: #00ff87;
         }
 
@@ -137,6 +237,9 @@
             text-decoration: none;
             font-weight: bold;
             transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
         .view-all:hover {
@@ -154,21 +257,33 @@
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            transition: transform 0.3s;
+            transition: all 0.3s;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
         .product-card:hover {
             transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         .product-image {
             width: 100%;
             height: 200px;
-            background: #2d3436;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
         }
 
         .product-info {
@@ -185,6 +300,7 @@
             color: #666;
             margin-bottom: 15px;
             font-size: 0.9em;
+            line-height: 1.5;
         }
 
         .product-price {
@@ -218,7 +334,7 @@
         }
 
         .footer-links li {
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .footer-links a {
@@ -263,26 +379,53 @@
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .search-bar {
+                width: 250px;
+            }
+
+            .nav-right {
+                gap: 20px;
+            }
+        }
+
         @media (max-width: 768px) {
             .welcome-title {
                 font-size: 2.5em;
             }
 
-            .nav-links {
+            .nav-right {
                 display: none;
+            }
+
+            .category-menu {
+                margin-left: auto;
+            }
+
+            .category-list {
+                width: 100%;
+                position: fixed;
+                top: 80px;
+                left: 0;
             }
 
             .footer-content {
                 grid-template-columns: 1fr;
             }
+
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+
         }
     </style>
 </head>
 <body>
+
 <!-- Welcome Banner -->
 <div class="welcome-banner">
     <div class="particles">
-        <!-- Generate particles dynamically with JavaScript -->
+        <!-- Particles will be added via JavaScript -->
     </div>
     <div class="welcome-content">
         <h1 class="welcome-title">Welcome to TBEST PC Paradise</h1>
@@ -291,12 +434,33 @@
     </div>
 </div>
 
-<!-- Header -->
 <header>
     <nav>
-        <div class="logo">TB PC STORE</div>
-        <div class="nav-links">
-            <a href="#"><i class="fas fa-search"></i> Tìm kiếm</a>
+        <div class="nav-left">
+            <div class="logo">TB PC STORE</div>
+            <div class="category-menu">
+                <button class="category-btn">
+                    <i class="fas fa-bars"></i> Danh mục
+                </button>
+                <div class="category-list">
+                    <a href="#"><i class="fas fa-desktop"></i> PC Gaming</a>
+                    <a href="#"><i class="fas fa-laptop"></i> Laptop Gaming</a>
+                    <a href="#"><i class="fas fa-microchip"></i> Linh kiện PC</a>
+                    <a href="#"><i class="fas fa-keyboard"></i> Bàn phím</a>
+                    <a href="#"><i class="fas fa-mouse"></i> Chuột gaming</a>
+                    <a href="#"><i class="fas fa-headset"></i> Tai nghe</a>
+                    <a href="#"><i class="fas fa-chair"></i> Ghế gaming</a>
+                    <a href="#"><i class="fas fa-desktop"></i> Màn hình</a>
+                    <a href="#"><i class="fas fa-gamepad"></i> Tay cầm</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Tìm kiếm sản phẩm...">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+            </div>
             <a href="/TheBestPc/cart"><i class="fas fa-clipboard-list"></i> Tra cứu đơn hàng</a>
             <a href="/TheBestPc/cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
             <a href="/TheBestPc/account"><i class="fas fa-user"></i> Tài khoản</a>
@@ -313,10 +477,10 @@
             <a href="#" class="view-all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
         </div>
         <div class="products-grid">
-            <!-- Product Card 1 -->
+            <!-- Product Cards -->
             <div class="product-card">
                 <div class="product-image">
-                    <i class="fas fa-desktop fa-3x" style="color: white;"></i>
+                    <img src="/api/placeholder/280/200" alt="Gaming PC Pro X">
                 </div>
                 <div class="product-info">
                     <h3 class="product-name">Gaming PC Pro X</h3>
@@ -327,59 +491,60 @@
                     <div class="product-price">$2,999</div>
                 </div>
             </div>
+            <!-- Repeat similar product cards with different images -->
             <div class="product-card">
                 <div class="product-image">
-                    <i class="fas fa-desktop fa-3x" style="color: white;"></i>
+                    <img src="/api/placeholder/280/200" alt="Gaming PC Ultra">
                 </div>
                 <div class="product-info">
-                    <h3 class="product-name">Gaming PC Pro X</h3>
+                    <h3 class="product-name">Gaming PC Ultra</h3>
                     <p class="product-specs">
-                        RTX 4080 • i9-13900K<br>
-                        32GB RAM • 2TB NVMe
+                        RTX 4070 • i7-13700K<br>
+                        16GB RAM • 1TB NVMe
                     </p>
-                    <div class="product-price">$2,999</div>
+                    <div class="product-price">$1,999</div>
                 </div>
             </div>
             <div class="product-card">
                 <div class="product-image">
-                    <i class="fas fa-desktop fa-3x" style="color: white;"></i>
+                    <img src="/api/placeholder/280/200" alt="Gaming PC Ultra">
                 </div>
                 <div class="product-info">
-                    <h3 class="product-name">Gaming PC Pro X</h3>
+                    <h3 class="product-name">Gaming PC Ultra</h3>
                     <p class="product-specs">
-                        RTX 4080 • i9-13900K<br>
-                        32GB RAM • 2TB NVMe
+                        RTX 4070 • i7-13700K<br>
+                        16GB RAM • 1TB NVMe
                     </p>
-                    <div class="product-price">$2,999</div>
+                    <div class="product-price">$1,999</div>
                 </div>
             </div>
             <div class="product-card">
                 <div class="product-image">
-                    <i class="fas fa-desktop fa-3x" style="color: white;"></i>
+                    <img src="/api/placeholder/280/200" alt="Gaming PC Ultra">
                 </div>
                 <div class="product-info">
-                    <h3 class="product-name">Gaming PC Pro X</h3>
+                    <h3 class="product-name">Gaming PC Ultra</h3>
                     <p class="product-specs">
-                        RTX 4080 • i9-13900K<br>
-                        32GB RAM • 2TB NVMe
+                        RTX 4070 • i7-13700K<br>
+                        16GB RAM • 1TB NVMe
                     </p>
-                    <div class="product-price">$2,999</div>
+                    <div class="product-price">$1,999</div>
                 </div>
             </div>
             <div class="product-card">
                 <div class="product-image">
-                    <i class="fas fa-desktop fa-3x" style="color: white;"></i>
+                    <img src="https://product.hstatic.net/200000722513/product/pc_gvn_viper_i3060_gen_13_-_3_a7538c02de68412d8a7a4c8626c1b51b_grande.png" alt="Gaming PC Ultra">
                 </div>
                 <div class="product-info">
-                    <h3 class="product-name">Gaming PC Pro X</h3>
+                    <h3 class="product-name">Gaming PC Ultra</h3>
                     <p class="product-specs">
-                        RTX 4080 • i9-13900K<br>
-                        32GB RAM • 2TB NVMe
+                        RTX 4070 • i7-13700K<br>
+                        16GB RAM • 1TB NVMe
                     </p>
-                    <div class="product-price">$2,999</div>
+                    <div class="product-price">$1,999</div>
                 </div>
             </div>
-            <!-- More product cards... -->
+            <!-- Add more product cards as needed -->
         </div>
     </section>
 
@@ -516,6 +681,19 @@
         document.querySelector('.main-content').scrollIntoView({
             behavior: 'smooth'
         });
+    });
+    const categoryBtn = document.querySelector('.category-btn');
+    const categoryList = document.querySelector('.category-list');
+
+    categoryBtn.addEventListener('click', () => {
+        categoryList.classList.toggle('active');
+    });
+
+    // Close category menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.category-menu')) {
+            categoryList.classList.remove('active');
+        }
     });
 </script>
 </body>
