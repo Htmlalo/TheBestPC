@@ -1,4 +1,4 @@
-package com.thebest.thebestpc.controller.account;
+package com.thebest.thebestpc.controller;
 
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class AccountController {
+public class CartController {
 
-    @GetMapping("/account")
-    public String accountView() {
-        return "view/account/InformationAccountForm";
+    @GetMapping("/cart")
+    public String cartView() {
+        
+        return "view/CartForm";
     }
 }

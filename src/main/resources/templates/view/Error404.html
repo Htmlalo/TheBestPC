@@ -1,0 +1,205 @@
+
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Page Not Found</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .error-container {
+      min-height: 100vh;
+      background: linear-gradient(45deg, #1a1a1a, #2d3436);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 20px;
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .particle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+
+    .error-content {
+      text-align: center;
+      color: white;
+      z-index: 2;
+      animation: fadeInUp 1s ease;
+      max-width: 600px;
+    }
+
+    .error-icon {
+      font-size: 8em;
+      color: #00ff87;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    .error-title {
+      font-size: 3em;
+      margin-bottom: 20px;
+      background: linear-gradient(45deg, #00ff87, #60efff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .error-message {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      color: #ffffff90;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .home-btn {
+      padding: 15px 40px;
+      font-size: 1.2em;
+      background: linear-gradient(45deg, #00ff87, #60efff);
+      border: none;
+      border-radius: 30px;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: transform 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .support-btn {
+      padding: 15px 40px;
+      font-size: 1.2em;
+      background: transparent;
+      border: 2px solid #00ff87;
+      border-radius: 30px;
+      color: #00ff87;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .home-btn:hover {
+      transform: scale(1.05);
+    }
+
+    .support-btn:hover {
+      background: #00ff87;
+      color: #1a1a1a;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(0) translateX(0);
+      }
+      100% {
+        transform: translateY(-100vh) translateX(100vw);
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .error-title {
+        font-size: 2em;
+      }
+      .error-icon {
+        font-size: 6em;
+      }
+      .action-buttons {
+        flex-direction: column;
+      }
+      .home-btn, .support-btn {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="error-container">
+  <div class="particles">
+    <!-- Particles will be added by JavaScript -->
+  </div>
+  <div class="error-content">
+    <i class="fas fa-exclamation-triangle error-icon"></i>
+    <h1 class="error-title">404 - Không Tìm Thấy Trang</h1>
+    <p class="error-message">
+      Xin lỗi, trang bạn đang tìm kiếm không tồn tại hoặc đã được di chuyển.
+      Vui lòng kiểm tra lại đường dẫn hoặc quay về trang chủ.
+    </p>
+    <div class="action-buttons">
+      <a th:href=" @{/}" class="home-btn">
+        <i class="fas fa-home"></i>
+        Về Trang Chủ
+      </a>
+      <a href="#" class="support-btn">
+        <i class="fas fa-headset"></i>
+        Liên Hệ Hỗ Trợ
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Create animated particles
+  const particles = document.querySelector('.particles');
+  for (let i = 0; i < 50; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'particle';
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.animationDelay = Math.random() * 15 + 's';
+    particles.appendChild(particle);
+  }
+</script>
+</body>
+</html>

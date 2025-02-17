@@ -1,0 +1,33 @@
+<header>
+  <nav>
+    <div class="nav-left">
+      <div class="logo">TB PC STORE</div>
+      <div class="category-menu">
+        <button class="category-btn">
+          <i class="fas fa-bars"></i> Danh mục
+        </button>
+        <div class="category-list">
+          <a href="#"><i class="fas fa-desktop"></i> PC Gaming</a>
+          <a href="#"><i class="fas fa-laptop"></i> Laptop Gaming</a>
+          <a href="#"><i class="fas fa-microchip"></i> Linh kiện PC</a>
+          <a href="#"><i class="fas fa-keyboard"></i> Bàn phím</a>
+          <a href="#"><i class="fas fa-mouse"></i> Chuột gaming</a>
+          <a href="#"><i class="fas fa-headset"></i> Tai nghe</a>
+          <a href="#"><i class="fas fa-chair"></i> Ghế gaming</a>
+          <a href="#"><i class="fas fa-desktop"></i> Màn hình</a>
+          <a href="#"><i class="fas fa-gamepad"></i> Tay cầm</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-right">
+      <div class="search-container">
+        <input type="text" class="search-bar" placeholder="Tìm kiếm sản phẩm...">
+        <button class="search-btn"><i class="fas fa-search"></i></button>
+      </div>
+      <a href="/TheBestPc/carts"><i class="fas fa-clipboard-list"></i> Tra cứu đơn hàng</a>
+      <a href="/TheBestPc/cart"><i class="fas fa-shopping-cart"></i> Giỏ hàng</a>
+      <a href="/TheBestPc/account" th:text="${'Xin chào ' + session.nameAccount}"><i class="fas fa-user"></i> </a>
+    </div>
+  </nav>
+</header>

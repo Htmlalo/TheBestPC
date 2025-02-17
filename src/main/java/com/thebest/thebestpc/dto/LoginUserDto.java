@@ -10,8 +10,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @AllArgsConstructor
-public class UserCreateDto {
+public class LoginUserDto {
     String email;
     String password;
-    String fullName;
 }

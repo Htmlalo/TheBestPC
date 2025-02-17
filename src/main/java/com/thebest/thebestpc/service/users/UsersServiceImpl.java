@@ -1,17 +1,16 @@
 package com.thebest.thebestpc.service.users;
 
-import com.thebest.thebestpc.dto.UserCreateDto;
-import com.thebest.thebestpc.dto.request.ApiResponse;
-import com.thebest.thebestpc.exception.AppException;
-import com.thebest.thebestpc.exception.ErrorMessage;
+import com.thebest.thebestpc.dto.RegisterUserDto;
+import com.thebest.thebestpc.exception.ResourceNotFoundException;
 import com.thebest.thebestpc.model.Users;
 import com.thebest.thebestpc.repository.UsersRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -22,22 +21,26 @@ public class UsersServiceImpl implements UsersService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<ApiResponse<Users>> createUserApi(UserCreateDto userCreateDto) {
+    public Users createNewUser(RegisterUserDto dto) {
+        if (usersRepository.existsByEmail(dto.getEmail()))
+            throw new IllegalArgumentException("Email:" + dto.getEmail() + " Đã tồn tại");
 
-        if (!usersRepository.existsByEmail(userCreateDto.getEmail())) {
-            Users users = Users.builder()
-                    .fullName(userCreateDto.getFullName())
-                    .password(passwordEncoder.encode(userCreateDto.getPassword()))
-                    .email(userCreateDto.getEmail())
-                    .build();
-            return ResponseEntity.ok(ApiResponse.ok(usersRepository.save(users)));
-        } else {
-            throw new AppException(ErrorMessage.USER_EXIST);
-        }
+        Users users = Users.builder()
+                .email(dto.getEmail())
+                .password(passwordEncoder.encode(dto.getPassword()))
+                .fullName(dto.getFullName())
+                .build();
+        return usersRepository.save(users);
     }
 
     @Override
     public Users findUserByEmail(String email) {
-        return usersRepository.findUserByEmail(email);
+        return usersRepository.findUserByEmail(email).orElseThrow(() -> new IllegalArgumentException("Email:" + email + " Không tìm thấy"));
+    }
+
+    @Override
+    public void isValidPassword(String email, String password) {
+        if (!passwordEncoder.matches(password, findUserByEmail(email).getPassword()))
+            throw new IllegalArgumentException("Mật khẩu khong chính xác");
     }
 }

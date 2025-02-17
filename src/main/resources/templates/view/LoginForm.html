@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -178,15 +178,17 @@
 <body>
 <div class="container">
     <div class="forms-container">
+        <p th:text="${error}" ></p>
+        <p th:text="${success}" ></p>
         <div class="signin-signup">
             <!-- Đăng nhập form -->
-            <form action="#" class="sign-in-form" id="login-form">
+            <form action="http://localhost:9090/TheBestPc/login" method="post" class="sign-in-form" id="login-form">
                 <h2 class="title">Đăng nhập</h2>
                 <div class="input-field">
-                    <input type="email" placeholder="Email" required>
+                    <input type="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="input-field">
-                    <input type="password" placeholder="Mật khẩu" required>
+                    <input type="password" name="password" placeholder="Mật khẩu" required>
                 </div>
                 <input type="submit" value="Đăng nhập" class="btn">
                 <p class="social-text">Hoặc đăng nhập với</p>
@@ -198,10 +200,10 @@
             </form>
 
             <!-- Đăng ký form -->
-            <form action="#" class="sign-up-form" id="register-form">
+            <form action="http://localhost:9090/TheBestPc/register" class="sign-up-form" id="register-form">
                 <h2 class="title">Đăng ký</h2>
                 <div class="input-field">
-                    <input type="text" name="fullName" placeholder="Họ và tên" required>
+                    <input type="text" name="fullName"  placeholder="Họ và tên" required>
                 </div>
                 <div class="input-field">
                     <input type="email" name="email" placeholder="Email" required>
@@ -245,10 +247,10 @@
     }
 
     // Xử lý form đăng nhập
-    document.querySelector('.sign-in-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        // Xử lý logic đăng nhập ở đây
-    });
+    // document.querySelector('.sign-in-form').addEventListener('submit', function (e) {
+    //     e.preventDefault();
+    //     // Xử lý logic đăng nhập ở đây
+    // });
 
     // Xử lý form đăng ký
     document.querySelector('.sign-up-form').addEventListener('submit', function (e) {

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi tiết sản phẩm - PC Gaming Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/res/css/Detail.css}">
+    <link rel="stylesheet" th:href="@{/res/css/Layout.css}">
+</head>
+<body>
+<div th:replace=" ~{view/fragments/header :: header}"></div>
+
+<!-- Product Detail Section -->
+<div class="product-container">
+    <div class="product-grid">
+        <!-- Product Images -->
+        <div class="product-images">
+            <img id="mainImage" src="placeholder.jpg" alt="Product" class="main-image">
+            <div class="image-thumbnails" id="thumbnails">
+                <img src="thumb1.jpg" alt="Thumbnail" class="thumb">
+                <img src="thumb2.jpg" alt="Thumbnail" class="thumb">
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-info">
+            <h1 class="product-title" id="productName">Tên sản phẩm</h1>
+            <div class="product-rating">
+                <div class="stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <span id="productRating">5.0 Xem đánh giá</span>
+            </div>
+            <div class="product-price" id="productPrice">18.190.000đ</div>
+            <div class="product-stock" id="productStock">10 sản phẩm có sẵn</div>
+
+            <div class="gift-section">
+                <h3 class="gift-title">
+                    <i class="fas fa-gift"></i>
+                    Quà tặng khuyến mãi
+                </h3>
+                <p id="productGift">Tặng ngay 2 x Ram 8GB RGB trị giá 890.000đ</p>
+            </div>
+
+            <div class="action-buttons">
+                <button class="buy-now">MUA NGAY</button>
+                <button class="config-btn" onclick="showConfig()">
+                    <i class="fas fa-cog"></i>
+                    Cấu hình
+                </button>
+            </div>
+
+            <div id="productDescription">
+                <!-- Product description here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section" id="comments">
+        <h2>Đánh giá sản phẩm</h2>
+        <div class="comment">
+            <div class="comment-header">
+                <span class="comment-author">Nguyễn Văn A</span>
+                <span class="comment-date">01/02/2024</span>
+            </div>
+            <p>Sản phẩm rất tốt, đóng gói cẩn thận...</p>
+        </div>
+    </div>
+</div>
+
+<!-- Configuration Modal -->
+<div id="configModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="hideConfig()">&times;</span>
+        <h2>Thông số kỹ thuật</h2>
+        <table class="config-table" id="configTable">
+            <tr>
+                <th>CPU</th>
+                <td>Intel Core i5-12400F</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div th:replace=" ~{view/fragments/footer :: footer}"></div>
+</body>
+<script th:src="@{/res/js/Layout.js}"></script>
+<script>
+    function showConfig() {
+        document.getElementById('configModal').style.display = 'block';
+    }
+
+    function hideConfig() {
+        document.getElementById('configModal').style.display = 'none';
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function (event) {
+        if (event.target == document.getElementById('configModal')) {
+            hideConfig();
+        }
+    }
+
+    // Thumbnail click handler
+    document.querySelectorAll('.thumb').forEach(thumb => {
+        thumb.onclick = function () {
+            document.getElementById('mainImage').src = this.src;
+        }
+    });
+</script>
+
+</html>

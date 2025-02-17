@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class DetailProductController {
 
     @GetMapping("/detailProduct")
-
     public String detailProduct() {
-        return "view/detailProduct/DetailProductForm";
+        return "view/DetailProductForm";
     }
 }
