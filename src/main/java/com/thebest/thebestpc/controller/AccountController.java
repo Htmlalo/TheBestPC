@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class AccountController {
 
+
+
+
+
     @GetMapping("/account")
     public String accountView() {
         return "view/InformationAccountForm";
