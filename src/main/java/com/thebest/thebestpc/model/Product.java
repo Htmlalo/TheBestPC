@@ -16,8 +16,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-
+    @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
     String name;
@@ -40,6 +39,6 @@ public class Product {
     @OneToMany(mappedBy = "product" , cascade = CascadeType.ALL)
     Set<OderItem> oderItems;
 
-    @OneToMany(mappedBy = "product" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product" , cascade = CascadeType.PERSIST)
     Set<ProductConfig> productConfigs;
 }

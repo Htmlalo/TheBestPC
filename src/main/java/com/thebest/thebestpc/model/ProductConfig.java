@@ -16,7 +16,7 @@ public class ProductConfig {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     String id;
 
     @Column(name = "[key]")
@@ -24,6 +24,6 @@ public class ProductConfig {
 
     String value;
     @ManyToOne
-    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    @JoinColumn(name = "product_id")
     Product product;
 }

@@ -6,7 +6,7 @@ import com.thebest.thebestpc.model.Users;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-@Service
+
 public interface UsersService {
 
     Users createNewUser(RegisterUserDto dto);

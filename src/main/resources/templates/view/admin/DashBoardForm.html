@@ -1,0 +1,95 @@
+
+
+<main th:fragment="DashBoard" class="main-content">
+    <link rel="stylesheet" th:href="@{/res/css/admin/Dashboard.css}">
+    <!-- Content Header -->
+    <div class="content-header">
+        <h1 class="page-title" th:text="${pageTitle}">Dashboard</h1>
+        <p>Welcome back, Admin</p>
+    </div>
+
+    <!-- Dashboard Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-title">Tổng đơn hàng</div>
+            <div class="stat-value" th:text="${totalOrders}">150</div>
+            <div class="stat-change">
+                <i class="fas fa-arrow-up"></i> 12% so với tháng trước
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Doanh thu</div>
+            <div class="stat-value" th:text="${totalRevenue}">$25,400</div>
+            <div class="stat-change">
+                <i class="fas fa-arrow-up"></i> 8% so với tháng trước
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Khách hàng mới</div>
+            <div class="stat-value" th:text="${newCustomers}">48</div>
+            <div class="stat-change">
+                <i class="fas fa-arrow-up"></i> 15% so với tháng trước
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-title">Sản phẩm</div>
+            <div class="stat-value" th:text="${totalProducts}">324</div>
+            <div class="stat-change">
+                <i class="fas fa-arrow-up"></i> 5% so với tháng trước
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Orders Table -->
+    <div class="data-table mb-20">
+        <div class="table-header">
+            <h2 class="table-title">Đơn hàng gần đây</h2>
+            <div class="table-actions">
+                <button class="action-btn secondary-btn">
+                    <i class="fas fa-filter"></i> Lọc
+                </button>
+                <button class="action-btn primary-btn">
+                    <i class="fas fa-plus"></i> Thêm mới
+                </button>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Mã đơn</th>
+                <th>Khách hàng</th>
+                <th>Sản phẩm</th>
+                <th>Tổng tiền</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${recentOrders}">
+                <td th:text="${order.id}">#12345</td>
+                <td th:text="${order.customerName}">John Doe</td>
+                <td th:text="${order.productName}">Gaming PC Pro X</td>
+                <td th:text="${order.total}">$2,999</td>
+                <td>
+                                        <span class="status-badge status-pending" th:text="${order.status}">
+                                            Đang xử lý
+                                        </span>
+                </td>
+                <td>
+                    <button class="action-btn secondary-btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="action-btn secondary-btn">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>

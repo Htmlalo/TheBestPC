@@ -1,7 +1,6 @@
 package com.thebest.thebestpc.service.users;
 
 import com.thebest.thebestpc.dto.RegisterUserDto;
-import com.thebest.thebestpc.exception.ResourceNotFoundException;
 import com.thebest.thebestpc.mapper.UserMapper;
 import com.thebest.thebestpc.model.Users;
 import com.thebest.thebestpc.repository.UsersRepository;
@@ -10,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -27,7 +24,7 @@ public class UsersServiceImpl implements UsersService {
         if (usersRepository.existsByEmail(dto.getEmail()))
             throw new IllegalArgumentException("Email:" + dto.getEmail() + " Đã tồn tại");
 
-        Users users = userMapper.mapToUser(dto);
+        Users users = userMapper.mapToEntity(dto);
         return usersRepository.save(users);
     }
 

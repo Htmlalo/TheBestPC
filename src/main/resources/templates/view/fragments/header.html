@@ -31,7 +31,8 @@
                 <a th:href="@{login}"><i class="fas fa-user"></i> Đăng Nhập </a>
             </th:block>
             <th:block sec:authorize="isAuthenticated()">
-                <a href="/TheBestPc/account" th:text="${#authentication.principal.fullName}"><i class="fas fa-user"></i>
+                <a href="/TheBestPc/account" th:text="${#authentication.principal.fullName}"><i
+                        class="fas fa-user"></i>
                 </a>
             </th:block>
 

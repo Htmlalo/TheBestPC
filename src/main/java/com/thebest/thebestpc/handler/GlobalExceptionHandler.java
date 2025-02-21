@@ -8,14 +8,11 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UsernameNotFoundException.class)
-    public String handleNotFoundException() {
-        return "view/Error404";
-    }
 
-    @ExceptionHandler(Exception.class)
-    public String handleException() {
-        return "view/ErrorGlobal";
-    }
+//
+//    @ExceptionHandler(Exception.class)
+//    public String handleException() {
+//        return "view/ErrorGlobal";
+//    }
 
 }
