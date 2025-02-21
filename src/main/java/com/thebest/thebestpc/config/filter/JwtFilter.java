@@ -1,5 +1,6 @@
 package com.thebest.thebestpc.config.filter;
 
+import com.thebest.thebestpc.service.auth.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,6 +12,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 public class JwtFilter extends OncePerRequestFilter {
+
+    AuthService authService;
+
 
 
     @Override
@@ -24,5 +28,6 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
     }
 }

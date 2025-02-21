@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TB PC STORE - Đăng nhập/Đăng ký</title>
+    <style th:replace="~{view/fragments/notification ::notification-styles}"></style>
     <style>
         * {
             margin: 0;
@@ -178,14 +179,25 @@
 <body>
 <div class="container">
     <div class="forms-container">
-        <p th:text="${error}" ></p>
-        <p th:text="${success}" ></p>
+
+        <div th:fragment="error-notification" th:if="${param.error != null}">
+            <div id="errorNotification" class="tb-notification tb-error">
+                <div class="tb-notification-content">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span th:if="${param.error[0] == '1'}" th:text="'Email không tồn tại'">Operation failed!</span>
+
+                </div>
+                <button class="tb-close-btn" onclick="closeNotification('errorNotification')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
         <div class="signin-signup">
             <!-- Đăng nhập form -->
-            <form action="http://localhost:9090/TheBestPc/login" method="post" class="sign-in-form" id="login-form">
+            <form th:action="@{p/login}"  method="post" class="sign-in-form" id="login-form">
                 <h2 class="title">Đăng nhập</h2>
                 <div class="input-field">
-                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="email" name="username" placeholder="Email" required>
                 </div>
                 <div class="input-field">
                     <input type="password" name="password" placeholder="Mật khẩu" required>
@@ -228,7 +240,7 @@
         </button>
     </div>
 </div>
-
+<script th:src="@{/res/js/Layout.js}"></script>
 <script>
     function toggleForms() {
         const loginForm = document.getElementById('login-form');
@@ -283,6 +295,25 @@
             }
         );
     });
+    document.addEventListener('DOMContentLoaded', function() {
+        // Automatically close notifications after 5 seconds
+        const notifications = document.querySelectorAll('.tb-notification');
+        notifications.forEach(notification => {
+            setTimeout(() => {
+                closeNotification(notification.id);
+            }, 5000);
+        });
+    });
+
+    function closeNotification(notificationId) {
+        const notification = document.getElementById(notificationId);
+        if (notification) {
+            notification.classList.add('hiding');
+            setTimeout(() => {
+                notification.remove();
+            }, 500);
+        }
+    }
 </script>
 </body>
 </html>

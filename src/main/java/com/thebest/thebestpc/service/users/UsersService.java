@@ -14,4 +14,6 @@ public interface UsersService {
     Users findUserByEmail(String email);
 
     void isValidPassword(String email, String password);
+
+    Users findByEmail(String email);
 }

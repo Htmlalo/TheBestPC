@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpSession;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@Slf4j
 @Controller
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -24,7 +28,12 @@ public class LoginController {
 
     @GetMapping("/login")
     public String loginView() {
-        return "view/LoginForm";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication.getPrincipal().equals("anonymousUser")) {
+            return "view/LoginForm";
+        }
+        return "redirect:/";
     }
 
     @PostMapping("/login")

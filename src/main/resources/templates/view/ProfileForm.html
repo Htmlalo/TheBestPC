@@ -69,16 +69,17 @@
       <form th:object="${userProfile}">
         <div class="form-group">
           <label class="form-label">Họ và tên</label>
-          <input type="text" class="form-input"  value="Trinh Van Thuat 19.">
+          <input type="text" class="form-input" th:field="*{fullName}"  value="Trinh Van Thuat 19.">
         </div>
         <div class="form-group">
           <label class="form-label">Số điện thoại</label>
-          <input type="tel" class="form-input"  value="0913330175">
+          <input type="tel" class="form-input" th:field="*{phone}"  value="0913330175">
         </div>
         <div class="form-group">
           <label class="form-label">Email</label>
-          <input type="email" class="form-input" >
+          <input type="email" th:field="*{email}"  class="form-input" >
         </div>
+
       </form>
     </div>
 

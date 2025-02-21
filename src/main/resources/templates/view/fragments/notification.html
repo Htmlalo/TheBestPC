@@ -1,0 +1,113 @@
+<!-- fragments/notifications.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<!-- Success Notification Fragment -->
+<div th:fragment="success-notification" th:if="${success != null}">
+    <div id="successNotification" class="tb-notification tb-success">
+        <div class="tb-notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span th:text="${success}">Operation successful!</span>
+        </div>
+        <button class="tb-close-btn" onclick="closeNotification('successNotification')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+
+<!-- Error Notification Fragment -->
+<div th:fragment="error-notification" th:if="${error != null}">
+    <div id="errorNotification" class="tb-notification tb-error">
+        <div class="tb-notification-content">
+            <i class="fas fa-exclamation-circle"></i>
+            <span th:text="${error}">Operation failed!</span>
+        </div>
+        <button class="tb-close-btn" onclick="closeNotification('errorNotification')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+
+<!-- CSS Styles -->
+<style th:fragment="notification-styles">
+    .tb-notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        min-width: 300px;
+        max-width: 400px;
+        padding: 16px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        animation: slideIn 0.5s ease-out;
+        z-index: 9999;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .tb-notification-content {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+    }
+
+    .tb-notification i {
+        font-size: 20px;
+    }
+
+    .tb-notification.tb-success {
+        background: linear-gradient(45deg, #00ff87, #60efff);
+        color: #1a1a1a;
+    }
+
+    .tb-notification.tb-error {
+        background: linear-gradient(45deg, #ff4d4d, #f9866d);
+        color: white;
+    }
+
+    .tb-close-btn {
+        background: none;
+        border: none;
+        color: inherit;
+        cursor: pointer;
+        padding: 4px;
+        opacity: 0.8;
+        transition: opacity 0.3s;
+    }
+
+    .tb-close-btn:hover {
+        opacity: 1;
+    }
+
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideOut {
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+    }
+
+    .tb-notification.hiding {
+        animation: slideOut 0.5s ease-out forwards;
+    }
+</style>
+
+<!-- JavaScript -->
+
+</html>

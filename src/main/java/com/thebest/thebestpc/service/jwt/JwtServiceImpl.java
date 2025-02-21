@@ -7,12 +7,18 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.Date;
-
+@Service
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 public class JwtServiceImpl implements JwtService {
 
     private static final PublicKey publicKey = KeyLoader.loadPublicKey("public_key.pem");
