@@ -6,4 +6,5 @@ import java.util.List;
 
 public interface ProductConfigService {
     void saveAll(List<ProductConfig> productConfigs);
+    List<ProductConfig> findByProductId(Long productId);
 }

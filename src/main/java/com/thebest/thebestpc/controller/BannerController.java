@@ -10,6 +10,8 @@ public class BannerController {
 
     @GetMapping
     public String index() {
+
+
         return "view/Banner";
     }
 }

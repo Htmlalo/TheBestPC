@@ -17,7 +17,7 @@ public class Categories {
 
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    String id;
+    Long id;
     String name;
 
     @OneToMany(mappedBy = "categories")

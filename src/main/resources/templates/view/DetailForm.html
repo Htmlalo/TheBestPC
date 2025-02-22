@@ -12,11 +12,11 @@
 <div th:replace=" ~{view/fragments/header :: header}"></div>
 
 <!-- Product Detail Section -->
-<div class="product-container">
+<div th:object="${product}" class="product-container">
     <div class="product-grid">
         <!-- Product Images -->
         <div class="product-images">
-            <img id="mainImage" src="placeholder.jpg" alt="Product" class="main-image">
+            <img id="mainImage" th:src="@{/uploads/{image}(image=${product.image})}" alt="Product" class="main-image">
             <div class="image-thumbnails" id="thumbnails">
                 <img src="thumb1.jpg" alt="Thumbnail" class="thumb">
                 <img src="thumb2.jpg" alt="Thumbnail" class="thumb">
@@ -25,7 +25,7 @@
 
         <!-- Product Info -->
         <div class="product-info">
-            <h1 class="product-title" id="productName">Tên sản phẩm</h1>
+            <h1 class="product-title" th:text="${product.name}" id="productName">Tên sản phẩm</h1>
             <div class="product-rating">
                 <div class="stars">
                     <i class="fas fa-star"></i>
@@ -36,8 +36,9 @@
                 </div>
                 <span id="productRating">5.0 Xem đánh giá</span>
             </div>
-            <div class="product-price" id="productPrice">18.190.000đ</div>
-            <div class="product-stock" id="productStock">10 sản phẩm có sẵn</div>
+            <div class="product-price" th:text="${product.price}" id="productPrice">18.190.000đ</div>
+            <div class="product-stock" id="productStock"><span th:text="${product.stock}"></span></sp> sản phẩm có sẵn
+            </div>
 
             <div class="gift-section">
                 <h3 class="gift-title">
@@ -79,10 +80,10 @@
     <div class="modal-content">
         <span class="close-modal" onclick="hideConfig()">&times;</span>
         <h2>Thông số kỹ thuật</h2>
-        <table class="config-table" id="configTable">
+        <table th:each="config :${product.getProductConfigs()}" class="config-table" id="configTable">
             <tr>
-                <th>CPU</th>
-                <td>Intel Core i5-12400F</td>
+                <th th:text="${config.key}">CPU</th>
+                <td th:text="${config.value}">Intel Core i5-12400F</td>
             </tr>
         </table>
     </div>

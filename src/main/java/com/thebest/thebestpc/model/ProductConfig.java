@@ -1,5 +1,6 @@
 package com.thebest.thebestpc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,8 +17,8 @@ public class ProductConfig {
 
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
 
     @Column(name = "[key]")
     String key;
@@ -25,5 +26,6 @@ public class ProductConfig {
     String value;
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @JsonIgnore
     Product product;
 }

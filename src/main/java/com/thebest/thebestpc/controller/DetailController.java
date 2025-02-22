@@ -1,25 +1,26 @@
 package com.thebest.thebestpc.controller;
 
 import com.thebest.thebestpc.service.product.ProductService;
-import com.thebest.thebestpc.service.users.UsersService;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
-public class Home {
+@RequestMapping("/detail")
+public class DetailController {
 
-    ProductService productService;
+    private final ProductService productService;
 
-    @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("products", productService.findAllProducts());
-        return "view/HomeForm";
+    @GetMapping("{id}")
+    public String detailProduct(@PathVariable Long id, Model model) {
+        model.addAttribute("product", productService.findById(id));
+        return "view/DetailForm";
     }
 }

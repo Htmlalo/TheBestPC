@@ -84,6 +84,7 @@
     <div th:replace="~{view/admin/ManageProduct :: ManageProduct}"></div>
     <div th:replace="~{view/admin/ManageProduct :: addProdcutMoal}"></div>
     <div th:replace="~{view/admin/ManageProduct :: addConfigurationMoal}"></div>
+    <div th:replace="~{view/admin/ManageProduct :: configModal}"></div>
 </div>
 
 
@@ -147,5 +148,37 @@
             closeConfigModal();
         }
     }
+
+    function loadConfigModal(productId) {
+        fetch(`products/config/${productId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                let tbody = document.querySelector("#configModal tbody");
+                tbody.innerHTML = ""; // Xóa dữ liệu cũ
+
+                data.forEach(config => {
+                    let row = `
+                    <tr>
+                        <td>${config.key}</td>
+                        <td>${config.value}</td>
+                        <td>
+                            <button class="action-btn secondary-btn">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn secondary-btn" style="color: #dc3545">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                    tbody.innerHTML += row;
+                });
+
+                showModal("configModal"); // Hiển thị modal
+            })
+            .catch(error => console.error("Lỗi khi lấy dữ liệu cấu hình:", error));
+    }
+
 </script>
 </html>

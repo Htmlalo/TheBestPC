@@ -1,6 +1,7 @@
 package com.thebest.thebestpc.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -16,8 +17,8 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Product {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    Long id;
 
     String name;
 
@@ -33,12 +34,13 @@ public class Product {
     @JoinColumn(name = "categories_id", referencedColumnName = "id")
     Categories categories;
 
-    @OneToMany(mappedBy = "product" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     Set<CartItem> cartItems;
 
-    @OneToMany(mappedBy = "product" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     Set<OderItem> oderItems;
 
-    @OneToMany(mappedBy = "product" , cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
+    @JsonIgnore
     Set<ProductConfig> productConfigs;
 }

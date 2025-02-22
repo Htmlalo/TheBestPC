@@ -25,6 +25,7 @@ public class UsersServiceImpl implements UsersService {
             throw new IllegalArgumentException("Email:" + dto.getEmail() + " Đã tồn tại");
 
         Users users = userMapper.mapToEntity(dto);
+        users.setPassword(passwordEncoder.encode(dto.getPassword()));
         return usersRepository.save(users);
     }
 

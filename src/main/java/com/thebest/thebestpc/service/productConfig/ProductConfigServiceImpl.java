@@ -18,4 +18,10 @@ public class ProductConfigServiceImpl implements ProductConfigService {
     public void saveAll(List<ProductConfig> productConfigs) {
         productConfigRepository.saveAll(productConfigs);
     }
+
+    @Override
+    public List<ProductConfig> findByProductId(Long productId) {
+       return productConfigRepository.findConfigsByProductId(productId);
+    }
+
 }

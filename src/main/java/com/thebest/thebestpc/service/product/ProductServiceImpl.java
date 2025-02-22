@@ -5,6 +5,8 @@ import com.thebest.thebestpc.model.Product;
 import com.thebest.thebestpc.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProductServiceImpl implements ProductService {
 
@@ -19,10 +21,20 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void addProduct(Product product) {
 
-       try {
+        try {
             productRepository.save(product);
         } catch (IllegalArgumentException e) {
-           throw new IllegalArgumentException("Error: can't add product");
-       }
+            throw new IllegalArgumentException("Error: can't add product");
+        }
+    }
+
+    @Override
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public Product findById(Long id) {
+        return productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Error: can't find product"));
     }
 }
