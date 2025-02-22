@@ -17,16 +17,14 @@ import java.util.Set;
 @Table(name = "cart")
 public class Cart {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Id
     String id;
 
-
-    String session_id;
-
+    @Builder.Default
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at")
-    Date createdAt;
+    Date createdAt = new Date();
 
     @OneToMany(mappedBy = "cart")
     @Column(name = "cart_items")

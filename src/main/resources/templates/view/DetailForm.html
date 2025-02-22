@@ -13,6 +13,7 @@
 
 <!-- Product Detail Section -->
 <div th:object="${product}" class="product-container">
+    <form th:action="@{/detail/addCart/{id}(id=${product.id})}" method="post" >
     <div class="product-grid">
         <!-- Product Images -->
         <div class="product-images">
@@ -61,7 +62,7 @@
             </div>
         </div>
     </div>
-
+    </form>
     <!-- Comments Section -->
     <div class="comments-section" id="comments">
         <h2>Đánh giá sản phẩm</h2>

@@ -15,7 +15,7 @@ import lombok.experimental.FieldDefaults;
 public class CartItem {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
-    String id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
@@ -25,6 +25,7 @@ public class CartItem {
     @JoinColumn(name = "cart_id", referencedColumnName = "id")
     Cart cart;
 
-    int quantity;
+    @Builder.Default
+    int quantity = 1;
 
 }
