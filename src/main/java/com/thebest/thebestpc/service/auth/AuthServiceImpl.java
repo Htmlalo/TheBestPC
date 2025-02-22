@@ -1,7 +1,7 @@
 package com.thebest.thebestpc.service.auth;
 
 import com.thebest.thebestpc.config.custom.TokenInfo;
-import com.thebest.thebestpc.service.CookieService.CookieService;
+import com.thebest.thebestpc.service.Cookie.CookieService;
 import com.thebest.thebestpc.service.jwt.JwtService;
 import jakarta.servlet.http.Cookie;
 import lombok.AccessLevel;

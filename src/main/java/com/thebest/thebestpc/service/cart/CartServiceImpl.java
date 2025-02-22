@@ -8,8 +8,11 @@ import com.thebest.thebestpc.repository.CartItemRepository;
 import com.thebest.thebestpc.repository.CartRepository;
 import com.thebest.thebestpc.repository.ProductRepository;
 import com.thebest.thebestpc.repository.UsersRepository;
+import com.thebest.thebestpc.service.Cookie.CookieService;
 import com.thebest.thebestpc.service.cartItem.CartItemService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -57,6 +60,8 @@ public class CartServiceImpl implements CartService {
         Product product = productRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
         cartItemService.addCartItem(cart, product);
     }
+
+
 
 
 }

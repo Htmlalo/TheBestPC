@@ -1,5 +1,6 @@
 package com.thebest.thebestpc.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.simplejavamail.api.email.Email;
@@ -17,5 +18,8 @@ public class MyWebConfig {
         return new ModelMapper();
     }
 
-   
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
+    }
 }

@@ -13,7 +13,7 @@ public class CartController {
 
     @GetMapping("/cart")
     public String cartView() {
-        
+
         return "view/CartForm";
     }
 }
