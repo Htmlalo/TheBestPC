@@ -1,7 +1,6 @@
 package com.thebest.thebestpc.controller;
 
 import com.thebest.thebestpc.dto.CartCookieDto;
-import com.thebest.thebestpc.model.CartItem;
 import com.thebest.thebestpc.model.Users;
 import com.thebest.thebestpc.service.Cookie.CookieService;
 import com.thebest.thebestpc.service.cart.CartService;
@@ -20,9 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Slf4j
 @Controller

@@ -1,18 +1,16 @@
 package com.thebest.thebestpc.service.cart;
 
+
 import com.thebest.thebestpc.model.Cart;
-import com.thebest.thebestpc.model.CartItem;
 import com.thebest.thebestpc.model.Product;
 import com.thebest.thebestpc.model.Users;
-import com.thebest.thebestpc.repository.CartItemRepository;
 import com.thebest.thebestpc.repository.CartRepository;
 import com.thebest.thebestpc.repository.ProductRepository;
 import com.thebest.thebestpc.repository.UsersRepository;
-import com.thebest.thebestpc.service.Cookie.CookieService;
 import com.thebest.thebestpc.service.cartItem.CartItemService;
-import org.springframework.stereotype.Service;
+import com.thebest.thebestpc.service.users.UsersService;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -22,26 +20,32 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final ProductRepository productRepository;
     private final CartItemService cartItemService;
+    private final UsersService usersService;
 
-    public CartServiceImpl(UsersRepository usersRepository, CartRepository cartRepository, ProductRepository productRepository, CartItemService cartService) {
+
+    public CartServiceImpl(UsersRepository usersRepository, CartRepository cartRepository, ProductRepository productRepository, CartItemService cartService, UsersService usersService) {
         this.usersRepository = usersRepository;
         this.cartRepository = cartRepository;
         this.productRepository = productRepository;
         this.cartItemService = cartService;
+        this.usersService = usersService;
     }
 
     @Override
     public void addCart(String userId) {
         if (!this.checkout(userId)) {
             Users users = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-            cartRepository.save(Cart.builder().users(users).build());
+            Cart cart = Cart.builder().users(users).build();
+            cartRepository.save(cart);
+            users.setCart(cart);
+            usersService.updateSecurityContext(users);
         }
 
     }
 
     @Override
     public void removeCart(String userId) {
-
+        cartRepository.deleteCartByUsersId(userId);
     }
 
     @Override
@@ -61,7 +65,15 @@ public class CartServiceImpl implements CartService {
         cartItemService.addCartItem(cart, product);
     }
 
+    @Override
+    public Cart getCart(String userId) {
+        return cartRepository.findByUsersId(userId).orElseThrow(() -> new RuntimeException("Cart not found"));
+    }
 
+    @Override
+    public Cart findByUsersId(String userId) {
+        return cartRepository.findByUsersId(userId).orElse(null);
+    }
 
 
 }

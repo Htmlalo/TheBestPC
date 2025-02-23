@@ -24,7 +24,7 @@ public class Product {
 
     String description;
 
-    String price;
+    double price;
 
     String image;
 
@@ -38,7 +38,7 @@ public class Product {
     Set<CartItem> cartItems;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-    Set<OderItem> oderItems;
+    Set<OrderItems> oderItems;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.PERSIST)
     @JsonIgnore

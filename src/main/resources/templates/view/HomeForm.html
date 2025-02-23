@@ -171,6 +171,29 @@
 
         </div>
     </section>
+    <section>
+        <div class="section-header">
+            <h2 class="section-title">Sản phẩm bán chạy</h2>
+            <a href="#" class="view-all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+        </div>
+        <div class="products-grid">
+            <div th:each="product :${products}" class="product-card">
+                <div class="product-image">
+                    <a th:href="@{/detail/{id}(id=${product.id})}"><img th:src="@{/uploads/{imageName}(imageName=${product.image})}"
+                                                   alt="Gaming PC Ultra"></a>
+                </div>
+                <div class="product-info">
+                    <h3 class="product-name">Gaming PC Ultra</h3>
+                    <p class="product-specs">
+                        RTX 4070 • i7-13700K<br>
+                        16GB RAM • 1TB NVMe
+                    </p>
+                    <div class="product-price">$1,999</div>
+                </div>
+            </div>
+            <!-- Add more product cards as needed -->
+        </div>
+    </section>
 </main>
 
 <!-- Footer -->

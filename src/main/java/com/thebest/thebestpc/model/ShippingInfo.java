@@ -15,17 +15,19 @@ import lombok.experimental.FieldDefaults;
 public class ShippingInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    String id;
+    Long id;
 
     @Column(name = "full_name")
     String fullName;
-
+    boolean gender;
     String phone;
+    String city;
     String province;
     String district;
     String ward;
     String address;
-
+    String note;
+    double price;
     @OneToOne
     @JoinColumn(name = "orders_id", referencedColumnName = "id")
     Orders orders;

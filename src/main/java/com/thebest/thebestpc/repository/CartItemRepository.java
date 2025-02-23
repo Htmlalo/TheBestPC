@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,5 +20,5 @@ public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Query(value = "SELECT * FROM cart_items WHERE cart_id = :cartId AND product_id = :productId", nativeQuery = true)
     Optional<CartItem> findCartItemByCartAndProduct(@Param("cartId") String cartId, @Param("productId") Long productId);
 
-
+    List<CartItem> findAllByCartId(String cartId);
 }

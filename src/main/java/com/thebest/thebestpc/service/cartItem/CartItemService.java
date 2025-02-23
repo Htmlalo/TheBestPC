@@ -16,6 +16,7 @@ public interface CartItemService {
 
     void updateCartItem(String userId, Long productId, int quantity);
 
+    List<CartItem> getCartItems(String cartId);
     CartItem findByCartIdAndProductId(String cartId, Long productId);
 
     void addCartItemToCookie(String key, List<Object> value);

@@ -1,5 +1,6 @@
 package com.thebest.thebestpc.model;
 
+import com.thebest.thebestpc.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -15,7 +16,10 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    String id;
+    Long id;
+
+    @Enumerated(EnumType.ORDINAL)
+    OrderStatus status;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     ShippingInfo shippingInfo;

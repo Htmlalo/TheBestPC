@@ -7,6 +7,9 @@ import com.thebest.thebestpc.repository.UsersRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +46,18 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users findByEmail(String email) {
         return usersRepository.findByEmail(email).orElse(null);
+    }
+
+    @Override
+    public void updateSecurityContext(Users users) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        UsernamePasswordAuthenticationToken newAuth = new UsernamePasswordAuthenticationToken(
+                users,
+                authentication.getCredentials(),
+                authentication.getAuthorities()
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(newAuth);
     }
 }

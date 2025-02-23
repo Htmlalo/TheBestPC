@@ -1,157 +1,166 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giỏ hàng - TB PC STORE</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" th:href="@{/res/css/Cart.css}">
-  <link rel="stylesheet " th:href="@{/res/css/Layout.css}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ hàng - TB PC STORE</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/res/css/Cart.css}">
+    <link rel="stylesheet " th:href="@{/res/css/Layout.css}">
 </head>
 <body>
 <!--  Banner (preserved from TheBestHome) -->
 <div class="welcome-banner">
-  <div class="welcome-content">
-<!--    <h1 class="welcome-title" th:text="${pageTitle}">Giỏ hàng của bạn</h1>-->
-    <h1 class="welcome-title" >Giỏ hàng của bạn</h1>
-  </div>
+    <div class="welcome-content">
+        <!--    <h1 class="welcome-title" th:text="${pageTitle}">Giỏ hàng của bạn</h1>-->
+        <h1 class="welcome-title">Giỏ hàng của bạn</h1>
+    </div>
 </div>
 <!-- Header -->
 <div th:replace=" ~{view/fragments/header :: header}"></div>
 <!-- Cart Progress -->
 <div class="cart-progress">
-  <div class="progress-step active">
-    <div class="step-icon">
-      <i class="fas fa-shopping-cart"></i>
+    <div class="progress-step active">
+        <div class="step-icon">
+            <i class="fas fa-shopping-cart"></i>
+        </div>
+        <span class="step-label">Giỏ hàng</span>
     </div>
-    <span class="step-label">Giỏ hàng</span>
-  </div>
-  <div class="progress-step">
-    <div class="step-icon">
-      <i class="fas fa-info-circle"></i>
+    <div class="progress-step">
+        <div class="step-icon">
+            <i class="fas fa-info-circle"></i>
+        </div>
+        <span class="step-label">Thông tin đặt hàng</span>
     </div>
-    <span class="step-label">Thông tin đặt hàng</span>
-  </div>
-  <div class="progress-step">
-    <div class="step-icon">
-      <i class="fas fa-credit-card"></i>
+    <div class="progress-step">
+        <div class="step-icon">
+            <i class="fas fa-credit-card"></i>
+        </div>
+        <span class="step-label">Thanh toán</span>
     </div>
-    <span class="step-label">Thanh toán</span>
-  </div>
-  <div class="progress-step">
-    <div class="step-icon">
-      <i class="fas fa-check"></i>
+    <div class="progress-step">
+        <div class="step-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <span class="step-label">Hoàn tất</span>
     </div>
-    <span class="step-label">Hoàn tất</span>
-  </div>
 </div>
 
 <!-- Cart Content -->
-<div class="cart-content">
-  <!-- Cart Items -->
-  <div class="cart-items">
-    <!-- Thymeleaf iteration for cart items -->
-    <div th:each="item : ${cartItems}" class="cart-item">
-      <div class="item-image">
-        <i class="fas fa-desktop fa-2x" style="color: white;"></i>
-      </div>
-      <div class="item-info">
-        <h3 th:text="${item.name}">PC GVN Intel i5-12400F/ VGA RTX 4060</h3>
-        <p class="item-specs" th:text="${item.specs}">
-          RTX 4060 • i5-12400F • 16GB RAM • 1TB NVMe
-        </p>
-      </div>
-      <div class="quantity-controls">
-        <button class="quantity-btn" th:onclick="'updateQuantity(' + ${item.id} + ', -1)'">-</button>
-        <input type="number" class="quantity-input" th:value="${item.quantity}" min="1"
-               th:onchange="'updateQuantity(' + ${item.id} + ', this.value)'">
-        <button class="quantity-btn" th:onclick="'updateQuantity(' + ${item.id} + ', 1)'">+</button>
-      </div>
-      <div class="item-price" th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')} + 'đ'">
-        18.190.000đ
-      </div>
-      <i class="fas fa-times remove-btn" th:onclick="'removeItem(' + ${item.id} + ')'"></i>
-    </div>
-  </div>
+<form th:action="@{/shippingInfo}" method="get">
 
-  <!-- Cart Summary -->
-  <div class="cart-summary">
-    <div class="summary-row">
-      <span>Tạm tính:</span>
-      <span th:text="${#numbers.formatDecimal(subtotal, 0, 'COMMA', 0, 'POINT')} + 'đ'">18.190.000đ</span>
+    <div class="cart-content">
+        <!-- Cart Items -->
+        <div class="cart-items">
+            <!-- Thymeleaf iteration for cart items -->
+            <div th:each="item : ${cartItems}" class="cart-item">
+                <div class="item-image">
+                    <i class="fas fa-desktop fa-2x" style="color: white;"></i>
+                </div>
+                <div class="item-info">
+                    <h3 th:text="${item.product.name}">PC GVN Intel i5-12400F/ VGA RTX 4060</h3>
+                    <p th:each="config : ${item.product.productConfigs}" class="item-specs">
+                        <span th:text="${config.key} + ': ' + ${config.value}">CPU: Intel Core i5-12400F</span>
+                    </p>
+                </div>
+                <div class="quantity-controls">
+                    <button class="quantity-btn" th:onclick="'updateQuantity(' + ${item.id} + ', -1)'">-</button>
+                    <input type="number" class="quantity-input" th:value="${item.quantity}" min="1"
+                           th:onchange="'updateQuantity(' + ${item.id} + ', this.value)'">
+                    <button class="quantity-btn" th:onclick="'updateQuantity(' + ${item.id} + ', 1)'">+</button>
+                </div>
+                <div class="item-price"
+                     th:text="${#numbers.formatDecimal(item.product.price * item.quantity, 0, 'COMMA', 0, 'POINT') + ' đ'}">
+                    18.190.000đ
+                </div>
+                <i class="fas fa-times remove-btn" th:onclick="'removeItem(' + ${item.id} + ')'"></i>
+            </div>
+        </div>
+
+        <!-- Cart Summary -->
+        <div class="cart-summary">
+            <div class="summary-row">
+                <span>Tạm tính:</span>
+                <span th:text="${#numbers.formatDecimal(subtotal, 0, 'COMMA', 0, 'POINT') + ' đ'}">18.190.000 đ</span>
+
+            </div>
+            <div class="summary-row">
+                <span>Phí vận chuyển:</span>
+                <!--            <span th:text="${shipping == 0 ? 'Miễn phí' : #numbers.formatDecimal(shipping, 0, 'COMMA', 0, 'POINT') + 'đ'}">-->
+                <!--                    Miễn phí-->
+                <!--                </span>-->
+                Miễn phí
+            </div>
+            <div class="summary-row">
+                <span>Giảm giá:</span>
+                <!--            <span th:text="${#numbers.formatDecimal(discount, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>-->
+                0đ
+            </div>
+            <div class="summary-row summary-total">
+                <span>Tổng tiền:</span>
+                <span th:text="${#numbers.formatDecimal(subtotal, 0, 'COMMA', 0, 'POINT') + ' đ'}">18.190.000 đ</span>
+                <input type="hidden" name="total" th:value="${subtotal}">
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="window.location.href='/products'">
+                    <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
+                </button>
+                <button class="btn btn-primary" type="submit">
+                    Tiến hành đặt hàng <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
     </div>
-    <div class="summary-row">
-      <span>Phí vận chuyển:</span>
-      <span th:text="${shipping == 0 ? 'Miễn phí' : #numbers.formatDecimal(shipping, 0, 'COMMA', 0, 'POINT') + 'đ'}">
-                    Miễn phí
-                </span>
-    </div>
-    <div class="summary-row">
-      <span>Giảm giá:</span>
-      <span th:text="${#numbers.formatDecimal(discount, 0, 'COMMA', 0, 'POINT')} + 'đ'">0đ</span>
-    </div>
-    <div class="summary-row summary-total">
-      <span>Tổng tiền:</span>
-      <span th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 0, 'POINT')} + 'đ'">18.190.000đ</span>
-    </div>
-    <div class="action-buttons">
-      <button class="btn btn-secondary" onclick="window.location.href='/products'">
-        <i class="fas fa-arrow-left"></i> Tiếp tục mua sắm
-      </button>
-      <button class="btn btn-primary" onclick="window.location.href='/checkout/information'">
-        Tiến hành đặt hàng <i class="fas fa-arrow-right"></i>
-      </button>
-    </div>
-  </div>
-</div>
+</form>
 <div th:replace=" ~{view/fragments/footer :: footer}"></div>
 </body>
 <script th:src="@{/res/js/Layout.js}"></script>
 <script th:inline="javascript">
-  // Update quantity function
-  function updateQuantity(itemId, change) {
-    fetch(`/api/cart/update/${itemId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ quantity: change })
-    })
+    // Update quantity function
+    function updateQuantity(itemId, change) {
+        fetch(`/api/cart/update/${itemId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({quantity: change})
+        })
             .then(response => response.json())
             .then(data => {
-              if (data.success) {
-                location.reload();
-              }
-            });
-  }
-
-  // Remove item function
-  function removeItem(itemId) {
-    if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
-      fetch(`/api/cart/remove/${itemId}`, {
-        method: 'DELETE'
-      })
-              .then(response => response.json())
-              .then(data => {
                 if (data.success) {
-                  location.reload();
+                    location.reload();
                 }
-              });
+            });
     }
-  }
 
-  // Progress step navigation
-  document.querySelectorAll('.progress-step').forEach((step, index) => {
-    step.addEventListener('click', () => {
-      const steps = ['/cart', '/checkout/information', '/checkout/payment', '/checkout/complete'];
-      if (index > 0) { // Only allow forward navigation if cart is not empty
-        const cartItems = /*[[${cartItems}]]*/ [];
-        if (cartItems && cartItems.length > 0) {
-          window.location.href = steps[index];
+    // Remove item function
+    function removeItem(itemId) {
+        if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
+            fetch(`/api/cart/remove/${itemId}`, {
+                method: 'DELETE'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    }
+                });
         }
-      }
-    });
-  });
+    }
+
+    // Progress step navigation
+    // document.querySelectorAll('.progress-step').forEach((step, index) => {
+    //     step.addEventListener('click', () => {
+    //         const steps = ['/cart', '/checkout/information', '/checkout/payment', '/checkout/complete'];
+    //         if (index > 0) { // Only allow forward navigation if cart is not empty
+    //             const cartItems = /*[[${cartItems}]]*/ [];
+    //             if (cartItems && cartItems.length > 0) {
+    //                 window.location.href = steps[index];
+    //             }
+    //         }
+    //     });
+    // });
 
 </script>
 

@@ -12,10 +12,10 @@ import lombok.experimental.FieldDefaults;
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Table(name = "oder_items")
-public class OderItem {
+public class OrderItems {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    String id;
+    Long id;
     int quantity;
 
     @ManyToOne

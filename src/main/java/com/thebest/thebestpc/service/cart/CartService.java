@@ -1,5 +1,6 @@
 package com.thebest.thebestpc.service.cart;
 
+import com.thebest.thebestpc.model.Cart;
 import com.thebest.thebestpc.model.CartItem;
 
 import java.util.List;
@@ -15,5 +16,7 @@ public interface CartService {
 
     void addCartItemToCart(String userId, Long productId);
 
+    Cart getCart(String userId);
 
+    Cart findByUsersId(String userId);
 }

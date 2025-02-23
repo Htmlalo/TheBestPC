@@ -16,4 +16,6 @@ public interface UsersService {
     void isValidPassword(String email, String password);
 
     Users findByEmail(String email);
+
+    void updateSecurityContext(Users users);
 }
