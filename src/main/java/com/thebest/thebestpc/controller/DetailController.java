@@ -40,7 +40,6 @@ public class DetailController {
 
     @PostMapping("addCart/{id}")
     public String addCart(@PathVariable Long id) {
-        System.out.println(cookieService.getCookiesFromJson("cart", CartCookieDto.class).getFirst());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
             cartItemService.addOrUpdateCartItemToCookie("cart", new CartCookieDto(id, 1));

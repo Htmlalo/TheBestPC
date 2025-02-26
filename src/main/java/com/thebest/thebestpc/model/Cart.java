@@ -26,8 +26,7 @@ public class Cart {
     @Column(name = "created_at")
     Date createdAt = new Date();
 
-    @OneToMany(mappedBy = "cart")
-    @Column(name = "cart_items")
+    @OneToMany(mappedBy = "cart",cascade = CascadeType.REMOVE ,orphanRemoval = true)
     Set<CartItem> cartItems;
 
     @OneToOne

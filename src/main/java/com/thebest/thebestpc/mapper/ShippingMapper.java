@@ -17,7 +17,7 @@ public class ShippingMapper {
         return this.modelMapper.map(t, ShippingInfo.class);
     }
 
-    public <T> T mapToDto(Users users, Class<T> t) {
-        return this.modelMapper.map(users, t);
+    public <T> T mapToDto(ShippingInfo entity, Class<T> t) {
+        return this.modelMapper.map(entity, t);
     }
 }

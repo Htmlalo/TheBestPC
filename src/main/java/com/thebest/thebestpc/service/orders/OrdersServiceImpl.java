@@ -25,14 +25,15 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public void addOrder(String userId) {
+    public Orders addOrder(String userId) {
         Users users = usersRepository.findById(userId).orElse(null);
-        Orders orders = Orders.builder().users(users).build();
-        ordersRepository.save(orders);
+        Orders neworders = Orders.builder().users(users).build();
+        Orders orders= ordersRepository.save(neworders);
         if (users != null) {
             users.getOrders().add(orders);
             usersService.updateSecurityContext(users);
         }
+        return orders;
     }
 
     @Override

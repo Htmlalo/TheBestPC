@@ -12,11 +12,14 @@ public interface CartItemService {
 
     void removeCartItem(String userId, Long productId);
 
+    void removeAllCartItem(String cartId);
+
     void clearCartItems(String userId);
 
-    void updateCartItem(String userId, Long productId, int quantity);
+    void updateQuantityCartItem(String userId, Long productIdLong);
 
     List<CartItem> getCartItems(String cartId);
+
     CartItem findByCartIdAndProductId(String cartId, Long productId);
 
     void addCartItemToCookie(String key, List<Object> value);

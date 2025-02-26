@@ -19,12 +19,13 @@ public class Orders {
     Long id;
 
     @Enumerated(EnumType.ORDINAL)
-    OrderStatus status;
+    @Builder.Default
+    OrderStatus status = OrderStatus.PROCESSING;
 
     @OneToOne(mappedBy = "orders", cascade = CascadeType.ALL)
     ShippingInfo shippingInfo;
 
     @ManyToOne
-            @JoinColumn(name = "users_id", referencedColumnName = "id")
+    @JoinColumn(name = "users_id", referencedColumnName = "id")
     Users users;
 }

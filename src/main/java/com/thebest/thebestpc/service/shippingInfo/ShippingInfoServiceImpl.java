@@ -17,6 +17,8 @@ public class ShippingInfoServiceImpl implements ShippingInfoService {
 
     @Override
     public void addShippingInfoToOrders(ShippingInfo shippingInfo, Orders orders) {
-        shippingInfoRepository.save(ShippingInfo.builder().orders(orders).build());
+        shippingInfo.setOrders(orders);
+
+        shippingInfoRepository.save(shippingInfo);
     }
 }

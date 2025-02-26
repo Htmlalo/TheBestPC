@@ -4,6 +4,7 @@ import com.thebest.thebestpc.dto.ShippingInfoDto;
 import com.thebest.thebestpc.mapper.ShippingMapper;
 import com.thebest.thebestpc.model.*;
 import com.thebest.thebestpc.service.cart.CartService;
+import com.thebest.thebestpc.service.cartItem.CartItemService;
 import com.thebest.thebestpc.service.orderItem.OrderItemService;
 import com.thebest.thebestpc.service.orders.OrdersService;
 import com.thebest.thebestpc.service.shippingInfo.ShippingInfoService;
@@ -31,11 +32,14 @@ public class ShippingInfoController {
     ShippingInfoService shippingInfoService;
     private final ShippingMapper shippingMapper;
     CartService cartService;
+    CartItemService cartItemService;
 
     @GetMapping("/shippingInfo")
     public String shippingInfoView(@RequestParam double total, Model model) {
+        ShippingInfoDto shippingInfoDto =new ShippingInfoDto();
+        shippingInfoDto.setPrice(total);
         model.addAttribute("total", total);
-        model.addAttribute("shippingInfo", new ShippingInfoDto());
+        model.addAttribute("shippingInfo", shippingInfoDto);
         return "view/ShippingInfoForm";
     }
 
@@ -46,14 +50,13 @@ public class ShippingInfoController {
             return "redirect:/login";
         }
         Users users = (Users) authentication.getPrincipal();
-        ordersService.addOrder(users.getId());
+        Orders newOrders= ordersService.addOrder(users.getId());
         Cart cart = cartService.findByUsersId(users.getId());
         List<CartItem> cartItems = cart.getCartItems().stream().toList();
-        Orders orders = ordersService.findOrderByUserId(users.getId());
-        orderItemService.addCartItemToOrdersItem(cartItems, orders);
+        orderItemService.addCartItemToOrdersItem(cartItems, newOrders);
         ShippingInfo shippingInfo = shippingMapper.mapToEntity(dto);
-        shippingInfoService.addShippingInfoToOrders(shippingInfo, orders);
-        cartService.removeCart(users.getId());
+        shippingInfoService.addShippingInfoToOrders(shippingInfo, newOrders);
+        cartItemService.removeAllCartItem(cart.getId());
         return "view/ShippingInfoForm";
     }
 }

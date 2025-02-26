@@ -13,6 +13,7 @@ public class ShippingInfoDto {
     String fullName;
     boolean gender;
 
+
     String phone;
     String city;
     String province;
@@ -20,4 +21,5 @@ public class ShippingInfoDto {
     String ward;
     String address;
     String note;
+    double price;
 }

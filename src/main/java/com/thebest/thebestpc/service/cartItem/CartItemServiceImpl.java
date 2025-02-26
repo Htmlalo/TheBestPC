@@ -1,14 +1,19 @@
 package com.thebest.thebestpc.service.cartItem;
 
 import com.thebest.thebestpc.dto.CartCookieDto;
+import com.thebest.thebestpc.mapper.CartItemsMapper;
 import com.thebest.thebestpc.model.Cart;
 import com.thebest.thebestpc.model.CartItem;
 import com.thebest.thebestpc.model.Product;
 import com.thebest.thebestpc.repository.CartItemRepository;
+import com.thebest.thebestpc.repository.CartRepository;
 import com.thebest.thebestpc.service.Cookie.CookieService;
+import com.thebest.thebestpc.service.product.ProductServiceImpl;
 import jakarta.servlet.http.Cookie;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,10 +23,16 @@ public class CartItemServiceImpl implements CartItemService {
 
     private final CartItemRepository cartItemRepository;
     private final CookieService cookieService;
+    private final CartRepository cartRepository;
+    private final CartItemsMapper cartItemsMapper;
+    private final ProductServiceImpl productServiceImpl;
 
-    public CartItemServiceImpl(CartItemRepository cartItemRepository, CookieService cookieService) {
+    public CartItemServiceImpl(CartItemRepository cartItemRepository, CookieService cookieService, CartRepository cartRepository, CartItemsMapper cartItemsMapper, ProductServiceImpl productServiceImpl) {
         this.cartItemRepository = cartItemRepository;
         this.cookieService = cookieService;
+        this.cartRepository = cartRepository;
+        this.cartItemsMapper = cartItemsMapper;
+        this.productServiceImpl = productServiceImpl;
     }
 
     public void addCartItem(Cart cart, Product product) {
@@ -38,11 +49,18 @@ public class CartItemServiceImpl implements CartItemService {
 
     }
 
+    @Override
+    @Transactional
+    public void removeAllCartItem(String cartId) {
+        List<CartItem> cartItems = cartItemRepository.findAllByCartId(cartId);
+        cartItemRepository.deleteAll(cartItems);
+    }
+
     public void clearCartItems(String userId) {
 
     }
 
-    public void updateCartItem(String userId, Long productId, int quantity) {
+    public void updateQuantityCartItem(String userId, Long productId) {
         cartItemRepository.updateQuantityCartItem(userId, productId);
     }
 
@@ -62,8 +80,16 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     @Override
-    public List<CartItem> getCartItemsFromCookie(String userId) {
-        return null;
+    public List<CartItem> getCartItemsFromCookie(String key) {
+        List<CartCookieDto> cartCookieDtos = cookieService.getCookiesFromJson(key, CartCookieDto.class);
+        List<CartItem> cartItems = new ArrayList<>(List.of());
+        cartCookieDtos.forEach(cartCookieDto -> {
+            CartItem cartItem = cartItemsMapper.mapToEntity(cartCookieDto);
+            Product product = productServiceImpl.findById(cartCookieDto.getProductId());
+            cartItem.setProduct(product);
+            cartItems.add(cartItem);
+        });
+        return cartItems;
     }
 
     @Override

@@ -11,6 +11,7 @@ import com.thebest.thebestpc.service.cartItem.CartItemService;
 import com.thebest.thebestpc.service.users.UsersService;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -44,8 +45,10 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public void removeCart(String userId) {
-        cartRepository.deleteCartByUsersId(userId);
+        Cart cart = findByUsersId(userId);
+        cartRepository.delete(cart);
     }
 
     @Override

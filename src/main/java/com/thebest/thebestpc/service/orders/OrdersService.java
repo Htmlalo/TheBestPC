@@ -7,7 +7,7 @@ import com.thebest.thebestpc.model.Product;
 import java.util.List;
 
 public interface OrdersService {
-    void addOrder(String userId);
+    Orders addOrder(String userId);
 
     void updateTypeOrder(String orderId, int type);
     void addOrderItemToOrders(OrderItems orderItems, Long orderId);
