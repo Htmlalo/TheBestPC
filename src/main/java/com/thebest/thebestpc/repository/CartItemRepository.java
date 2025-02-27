@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface CartItemRepository extends JpaRepository<CartItem, Long> {
     @Procedure("UpdateQuantityCartItem")
-    void updateQuantityCartItem(@Param("CartId") String CartId, @Param("ProductId") Long ProductId);
+    void updateQuantityCartItem(@Param("CartId") String CartId, @Param("ProductId") Long ProductId, @Param("@Quantity") Integer quantity);
 
     @Query(value = "SELECT * FROM cart_items WHERE cart_id = :cartId AND product_id = :productId", nativeQuery = true)
     Optional<CartItem> findCartItemByCartAndProduct(@Param("cartId") String cartId, @Param("productId") Long productId);

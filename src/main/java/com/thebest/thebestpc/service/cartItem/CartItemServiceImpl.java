@@ -36,13 +36,17 @@ public class CartItemServiceImpl implements CartItemService {
     }
 
     public void addCartItem(Cart cart, Product product) {
-        CartItem cartItem = this.findByCartIdAndProductId(cart.getId(), product.getId());
-        if (cartItem != null) {
-            cartItemRepository.updateQuantityCartItem(cart.getId(), product.getId());
-        } else {
-            cartItemRepository.save(CartItem.builder().cart(cart).product(product).build());
-        }
+        addCartItem(cart, product, 1);
+    }
 
+    @Override
+    public void addCartItem(Cart cart, Product product, int quantity) {
+        CartItem cartItem = findByCartIdAndProductId(cart.getId(), product.getId());
+        if (cartItem != null) {
+            updateQuantityCartItem(cart, product);
+            return;
+        }
+        cartItemRepository.save(CartItem.builder().cart(cart).product(product).quantity(quantity).build());
     }
 
     public void removeCartItem(String userId, Long productId) {
@@ -60,8 +64,13 @@ public class CartItemServiceImpl implements CartItemService {
 
     }
 
-    public void updateQuantityCartItem(String userId, Long productId) {
-        cartItemRepository.updateQuantityCartItem(userId, productId);
+    public void updateQuantityCartItem(Cart cart, Product product) {
+        cartItemRepository.updateQuantityCartItem(cart.getId(), product.getId(), null);
+    }
+
+    @Override
+    public void updateQuantityCartItem(Cart cart, Product product, int quantity) {
+        cartItemRepository.updateQuantityCartItem(cart.getId(), product.getId(), quantity);
     }
 
     @Override
@@ -108,6 +117,5 @@ public class CartItemServiceImpl implements CartItemService {
         } else {
             cookieService.addCookieJson(key, List.of(value));
         }
-
     }
 }

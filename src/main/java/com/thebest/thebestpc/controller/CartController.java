@@ -45,17 +45,23 @@ public class CartController {
                 boolean isUpdated = false;
 
                 for (CartItem cartItem : cartItems) {
-                    if (cartItemCookie.getProduct().equals(cartItem.getProduct())) {
-                        cartItemService.updateQuantityCartItem(users.getId(), cartItem.getProduct().getId());
+                    if (cartItemCookie.getProduct().getId().equals(cartItem.getProduct().getId())) {
+
+                        cartItem.setQuantity(cartItem.getQuantity() + cartItemCookie.getQuantity());
+                        cartItemService.updateQuantityCartItem(users.getCart(), cartItem.getProduct(), cartItem.getQuantity());
                         isUpdated = true;
+
                         break;
                     }
                 }
 
                 if (!isUpdated) {
-                    cartItemService.addCartItem(users.getCart(), cartItemCookie.getProduct());
+                    cartItemService.addCartItem(users.getCart(), cartItemCookie.getProduct(), cartItemCookie.getQuantity());
+                    cartItems.add(cartItemCookie);
                 }
+
             }
+            cookieService.removeCookie("cart");
         }
 
         model.addAttribute("cartItems", cartItems);

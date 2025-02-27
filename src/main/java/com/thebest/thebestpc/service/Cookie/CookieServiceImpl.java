@@ -70,7 +70,10 @@ public class CookieServiceImpl implements CookieService {
 
     @Override
     public void removeCookie(String key) {
-        this.getCookie(key).setMaxAge(0);
+        Cookie cookie = new Cookie(key, "");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
     }
 
@@ -99,7 +102,7 @@ public class CookieServiceImpl implements CookieService {
                     for (Cookie cookie : cookies) {
                         if (cookie.getName().equals(key)) {
 
-                            return jsonService.parseJsonArray(CookieUtil.decodeValue(cookie.getValue()) , clazz);
+                            return jsonService.parseJsonArray(CookieUtil.decodeValue(cookie.getValue()), clazz);
                         }
                     }
                     return new ArrayList<T>();

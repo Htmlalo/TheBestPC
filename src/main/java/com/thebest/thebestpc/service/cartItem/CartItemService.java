@@ -4,11 +4,14 @@ import com.thebest.thebestpc.dto.CartCookieDto;
 import com.thebest.thebestpc.model.Cart;
 import com.thebest.thebestpc.model.CartItem;
 import com.thebest.thebestpc.model.Product;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
 public interface CartItemService {
     void addCartItem(Cart cart, Product product);
+
+    void addCartItem(Cart cart, Product product, int quantity);
 
     void removeCartItem(String userId, Long productId);
 
@@ -16,7 +19,9 @@ public interface CartItemService {
 
     void clearCartItems(String userId);
 
-    void updateQuantityCartItem(String userId, Long productIdLong);
+    void updateQuantityCartItem(Cart cart, Product product);
+
+    void updateQuantityCartItem(Cart cart, Product product, int Quantity);
 
     List<CartItem> getCartItems(String cartId);
 
