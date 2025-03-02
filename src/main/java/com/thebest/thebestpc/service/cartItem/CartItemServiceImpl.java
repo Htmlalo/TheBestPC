@@ -5,6 +5,7 @@ import com.thebest.thebestpc.mapper.CartItemsMapper;
 import com.thebest.thebestpc.model.Cart;
 import com.thebest.thebestpc.model.CartItem;
 import com.thebest.thebestpc.model.Product;
+import com.thebest.thebestpc.model.Users;
 import com.thebest.thebestpc.repository.CartItemRepository;
 import com.thebest.thebestpc.repository.CartRepository;
 import com.thebest.thebestpc.service.Cookie.CookieService;
@@ -117,5 +118,35 @@ public class CartItemServiceImpl implements CartItemService {
         } else {
             cookieService.addCookieJson(key, List.of(value));
         }
+    }
+
+    @Override
+    public List<CartItem> mergeCartFromCookie(String key, Users users) {
+        List<CartItem> cartItems = getCartItems(users.getId());
+        List<CartItem> cartItemListCookie = getCartItemsFromCookie(key);
+        if (!cartItemListCookie.isEmpty()) {
+            for (CartItem cartItemCookie : cartItemListCookie) {
+                boolean isUpdated = false;
+
+                for (CartItem cartItem : cartItems) {
+                    if (cartItemCookie.getProduct().getId().equals(cartItem.getProduct().getId())) {
+
+                        cartItem.setQuantity(cartItem.getQuantity() + cartItemCookie.getQuantity());
+                        updateQuantityCartItem(users.getCart(), cartItem.getProduct(), cartItem.getQuantity());
+                        isUpdated = true;
+
+                        break;
+                    }
+                }
+
+                if (!isUpdated) {
+                    addCartItem(users.getCart(), cartItemCookie.getProduct(), cartItemCookie.getQuantity());
+                    cartItems.add(cartItemCookie);
+                }
+
+            }
+            cookieService.removeCookie("cart");
+        }
+        return cartItems;
     }
 }

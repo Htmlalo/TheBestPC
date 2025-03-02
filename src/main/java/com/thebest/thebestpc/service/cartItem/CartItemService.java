@@ -4,6 +4,7 @@ import com.thebest.thebestpc.dto.CartCookieDto;
 import com.thebest.thebestpc.model.Cart;
 import com.thebest.thebestpc.model.CartItem;
 import com.thebest.thebestpc.model.Product;
+import com.thebest.thebestpc.model.Users;
 import org.springframework.security.core.parameters.P;
 
 import java.util.List;
@@ -32,4 +33,6 @@ public interface CartItemService {
     List<CartItem> getCartItemsFromCookie(String key);
 
     void addOrUpdateCartItemToCookie(String key, CartCookieDto value);
+
+    List<CartItem> mergeCartFromCookie(String key, Users users);
 }

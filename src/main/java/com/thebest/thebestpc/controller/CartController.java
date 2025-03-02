@@ -38,32 +38,7 @@ public class CartController {
             }
         }
         Users users = (Users) authentication.getPrincipal();
-        List<CartItem> cartItems = cartItemService.getCartItems(users.getCart().getId());
-        List<CartItem> cartItemListCookie = cartItemService.getCartItemsFromCookie("cart");
-        if (!cartItemListCookie.isEmpty()) {
-            for (CartItem cartItemCookie : cartItemListCookie) {
-                boolean isUpdated = false;
-
-                for (CartItem cartItem : cartItems) {
-                    if (cartItemCookie.getProduct().getId().equals(cartItem.getProduct().getId())) {
-
-                        cartItem.setQuantity(cartItem.getQuantity() + cartItemCookie.getQuantity());
-                        cartItemService.updateQuantityCartItem(users.getCart(), cartItem.getProduct(), cartItem.getQuantity());
-                        isUpdated = true;
-
-                        break;
-                    }
-                }
-
-                if (!isUpdated) {
-                    cartItemService.addCartItem(users.getCart(), cartItemCookie.getProduct(), cartItemCookie.getQuantity());
-                    cartItems.add(cartItemCookie);
-                }
-
-            }
-            cookieService.removeCookie("cart");
-        }
-
+        List<CartItem> cartItems = cartItemService.mergeCartFromCookie("cart", users);
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("subtotal", cartItems.stream().mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity()).sum());
         return "view/CartForm";
