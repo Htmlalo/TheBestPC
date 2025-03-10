@@ -5,18 +5,14 @@ import com.thebest.thebestpc.mapper.CartItemsMapper;
 import com.thebest.thebestpc.model.Cart;
 import com.thebest.thebestpc.model.CartItem;
 import com.thebest.thebestpc.model.Product;
-import com.thebest.thebestpc.model.Users;
 import com.thebest.thebestpc.repository.CartItemRepository;
-import com.thebest.thebestpc.repository.CartRepository;
 import com.thebest.thebestpc.service.Cookie.CookieService;
+import com.thebest.thebestpc.service.cart.CartServiceImpl;
 import com.thebest.thebestpc.service.product.ProductServiceImpl;
-import jakarta.servlet.http.Cookie;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CartItemServiceImpl implements CartItemService {
@@ -24,20 +20,22 @@ public class CartItemServiceImpl implements CartItemService {
 
     private final CartItemRepository cartItemRepository;
     private final CookieService cookieService;
-    private final CartRepository cartRepository;
     private final CartItemsMapper cartItemsMapper;
     private final ProductServiceImpl productServiceImpl;
+    private final CartServiceImpl cartServiceImpl;
 
-    public CartItemServiceImpl(CartItemRepository cartItemRepository, CookieService cookieService, CartRepository cartRepository, CartItemsMapper cartItemsMapper, ProductServiceImpl productServiceImpl) {
+
+    public CartItemServiceImpl(CartItemRepository cartItemRepository, CookieService cookieService, CartItemsMapper cartItemsMapper, ProductServiceImpl productServiceImpl, CartServiceImpl cartServiceImpl) {
         this.cartItemRepository = cartItemRepository;
         this.cookieService = cookieService;
-        this.cartRepository = cartRepository;
         this.cartItemsMapper = cartItemsMapper;
         this.productServiceImpl = productServiceImpl;
+        this.cartServiceImpl = cartServiceImpl;
     }
 
     public void addCartItem(Cart cart, Product product) {
         addCartItem(cart, product, 1);
+        cartServiceImpl.addCart("1");
     }
 
     @Override
@@ -61,9 +59,6 @@ public class CartItemServiceImpl implements CartItemService {
         cartItemRepository.deleteAll(cartItems);
     }
 
-    public void clearCartItems(String userId) {
-
-    }
 
     public void updateQuantityCartItem(Cart cart, Product product) {
         cartItemRepository.updateQuantityCartItem(cart.getId(), product.getId(), null);
@@ -119,34 +114,6 @@ public class CartItemServiceImpl implements CartItemService {
             cookieService.addCookieJson(key, List.of(value));
         }
     }
-
-    @Override
-    public List<CartItem> mergeCartFromCookie(String key, Users users) {
-        List<CartItem> cartItems = getCartItems(users.getId());
-        List<CartItem> cartItemListCookie = getCartItemsFromCookie(key);
-        if (!cartItemListCookie.isEmpty()) {
-            for (CartItem cartItemCookie : cartItemListCookie) {
-                boolean isUpdated = false;
-
-                for (CartItem cartItem : cartItems) {
-                    if (cartItemCookie.getProduct().getId().equals(cartItem.getProduct().getId())) {
-
-                        cartItem.setQuantity(cartItem.getQuantity() + cartItemCookie.getQuantity());
-                        updateQuantityCartItem(users.getCart(), cartItem.getProduct(), cartItem.getQuantity());
-                        isUpdated = true;
-
-                        break;
-                    }
-                }
-
-                if (!isUpdated) {
-                    addCartItem(users.getCart(), cartItemCookie.getProduct(), cartItemCookie.getQuantity());
-                    cartItems.add(cartItemCookie);
-                }
-
-            }
-            cookieService.removeCookie("cart");
-        }
-        return cartItems;
-    }
 }
+
+

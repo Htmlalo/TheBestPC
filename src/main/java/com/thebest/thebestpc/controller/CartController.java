@@ -3,8 +3,8 @@ package com.thebest.thebestpc.controller;
 import com.thebest.thebestpc.model.CartItem;
 import com.thebest.thebestpc.model.Users;
 import com.thebest.thebestpc.service.Cookie.CookieService;
-import com.thebest.thebestpc.service.cart.CartService;
 import com.thebest.thebestpc.service.cartItem.CartItemService;
+import com.thebest.thebestpc.service.manage.CartManagerService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -24,21 +24,24 @@ import java.util.List;
 @RequestMapping("/cart")
 public class CartController {
 
-    CartService cartService;
+
     CartItemService cartItemService;
     CookieService cookieService;
+    CartManagerService cartManagerService;
 
     @GetMapping
     public String cartView(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication instanceof AnonymousAuthenticationToken) {
+
+
             if (cookieService.getCookie("cart") != null) {
                 model.addAttribute("cartItems", cartItemService.getCartItemsFromCookie("cart"));
                 return "view/CartForm";
             }
         }
         Users users = (Users) authentication.getPrincipal();
-        List<CartItem> cartItems = cartItemService.mergeCartFromCookie("cart", users);
+        List<CartItem> cartItems = cartManagerService.mergeCartFromCookie("cart", users.getId());
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("subtotal", cartItems.stream().mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity()).sum());
         return "view/CartForm";

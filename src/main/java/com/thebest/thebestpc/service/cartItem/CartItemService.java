@@ -18,7 +18,6 @@ public interface CartItemService {
 
     void removeAllCartItem(String cartId);
 
-    void clearCartItems(String userId);
 
     void updateQuantityCartItem(Cart cart, Product product);
 
@@ -34,5 +33,4 @@ public interface CartItemService {
 
     void addOrUpdateCartItemToCookie(String key, CartCookieDto value);
 
-    List<CartItem> mergeCartFromCookie(String key, Users users);
 }

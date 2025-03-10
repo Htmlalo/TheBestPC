@@ -14,7 +14,7 @@ public interface CartService {
 
     boolean checkout(String userId);
 
-    void addCartItemToCart(String userId, Long productId);
+
 
     Cart getCart(String userId);
 

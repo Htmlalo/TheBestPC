@@ -30,7 +30,7 @@ public class ShippingInfoController {
     OrdersService ordersService;
     OrderItemService orderItemService;
     ShippingInfoService shippingInfoService;
-    private final ShippingMapper shippingMapper;
+     ShippingMapper shippingMapper;
     CartService cartService;
     CartItemService cartItemService;
 

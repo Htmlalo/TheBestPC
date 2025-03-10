@@ -5,6 +5,7 @@ import com.thebest.thebestpc.model.Users;
 import com.thebest.thebestpc.service.Cookie.CookieService;
 import com.thebest.thebestpc.service.cart.CartService;
 import com.thebest.thebestpc.service.cartItem.CartItemService;
+import com.thebest.thebestpc.service.manage.CartManagerService;
 import com.thebest.thebestpc.service.product.ProductService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class DetailController {
     CartService cartService;
     CookieService cookieService;
     CartItemService cartItemService;
+    CartManagerService cartManagerService;
 
     @GetMapping("{id}")
     public String detailProduct(@PathVariable Long id, Model model) {
@@ -46,8 +48,7 @@ public class DetailController {
             return "redirect:/detail/" + id;
         }
         Users users = (Users) authentication.getPrincipal();
-        cartService.addCart(users.getId());
-        cartService.addCartItemToCart(users.getId(), id);
+        cartManagerService.addProductToCart(users.getId(), id);
 
         return "redirect:/detail/" + id;
     }
