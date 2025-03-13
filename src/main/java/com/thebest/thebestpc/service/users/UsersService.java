@@ -17,5 +17,9 @@ public interface UsersService {
 
     Users findByEmail(String email);
 
+    Users findById(String userId);
+
     void updateSecurityContext(Users users);
+
+
 }

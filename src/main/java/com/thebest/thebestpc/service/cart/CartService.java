@@ -15,7 +15,6 @@ public interface CartService {
     boolean checkout(String userId);
 
 
-
     Cart getCart(String userId);
 
     Cart findByUsersId(String userId);

@@ -22,20 +22,19 @@ public class CartItemServiceImpl implements CartItemService {
     private final CookieService cookieService;
     private final CartItemsMapper cartItemsMapper;
     private final ProductServiceImpl productServiceImpl;
-    private final CartServiceImpl cartServiceImpl;
 
 
-    public CartItemServiceImpl(CartItemRepository cartItemRepository, CookieService cookieService, CartItemsMapper cartItemsMapper, ProductServiceImpl productServiceImpl, CartServiceImpl cartServiceImpl) {
+
+    public CartItemServiceImpl(CartItemRepository cartItemRepository, CookieService cookieService, CartItemsMapper cartItemsMapper, ProductServiceImpl productServiceImpl) {
         this.cartItemRepository = cartItemRepository;
         this.cookieService = cookieService;
         this.cartItemsMapper = cartItemsMapper;
         this.productServiceImpl = productServiceImpl;
-        this.cartServiceImpl = cartServiceImpl;
+
     }
 
     public void addCartItem(Cart cart, Product product) {
         addCartItem(cart, product, 1);
-        cartServiceImpl.addCart("1");
     }
 
     @Override

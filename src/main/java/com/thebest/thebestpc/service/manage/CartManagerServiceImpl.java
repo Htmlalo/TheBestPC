@@ -9,6 +9,7 @@ import com.thebest.thebestpc.service.cartItem.CartItemServiceImpl;
 import com.thebest.thebestpc.service.product.ProductServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -45,13 +46,18 @@ public class CartManagerServiceImpl implements CartManagerService {
     }
 
 
-
-
     @Override
     public List<CartItem> mergeCartFromCookie(String key, String userId) {
-        List<CartItem> cartItems = cartItemServiceImpl.getCartItems(userId);
+
+        Cart cart = cartServiceImpl.getCart(userId);
+        if (cart == null) {
+            cartServiceImpl.addCart(userId);
+            cart = cartServiceImpl.getCart(userId);
+        }
+
+
+        List<CartItem> cartItems = cartItemServiceImpl.getCartItems(cart.getId());
         List<CartItem> cartItemListCookie = cartItemServiceImpl.getCartItemsFromCookie(key);
-        cartServiceImpl.addCart(userId);
         if (cartItemListCookie.isEmpty()) {
             return cartItems;
         }
@@ -67,19 +73,20 @@ public class CartManagerServiceImpl implements CartManagerService {
 
             });
         }
-        Cart cart = cartServiceImpl.getCart(userId);
+
         for (CartItem cartItem : cartItemMap.values()) {
             cartItemServiceImpl.updateQuantityCartItem(cart, cartItem.getProduct(), cartItem.getQuantity());
         }
 
         cookieServiceImpl.removeCookie("cart");
-        return cartItems;
+        return new ArrayList<>(cartItemMap.values());
     }
 
     @Override
     public void removeProductFromCart() {
 
     }
+
     @Override
     public void removeCart(String userId) {
         cartServiceImpl.removeCart(userId);

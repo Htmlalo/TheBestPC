@@ -11,6 +11,7 @@ import com.thebest.thebestpc.service.cartItem.CartItemService;
 import com.thebest.thebestpc.service.cartItem.CartItemServiceImpl;
 import com.thebest.thebestpc.service.users.UsersService;
 
+import com.thebest.thebestpc.service.users.UsersServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,33 +22,34 @@ public class CartServiceImpl implements CartService {
     private final UsersRepository usersRepository;
     private final CartRepository cartRepository;
     private final UsersService usersService;
-    private final CartItemServiceImpl cartItemServiceImpl;
+    private final UsersServiceImpl usersServiceImpl;
 
 
-    public CartServiceImpl(UsersRepository usersRepository, CartRepository cartRepository, UsersService usersService, CartItemServiceImpl cartItemServiceImpl) {
+    public CartServiceImpl(UsersRepository usersRepository, CartRepository cartRepository, UsersService usersService, UsersServiceImpl usersServiceImpl) {
         this.usersRepository = usersRepository;
         this.cartRepository = cartRepository;
         this.usersService = usersService;
-        this.cartItemServiceImpl = cartItemServiceImpl;
+        this.usersServiceImpl = usersServiceImpl;
     }
 
     @Override
     public void addCart(String userId) {
-        if (!this.checkout(userId)) {
-            Users users = usersRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-            Cart cart = Cart.builder().users(users).build();
-            if (users.getCart() == null) {
-                cartRepository.save(cart);
-                users.setCart(cart);
-            }
-            usersService.updateSecurityContext(users);
+
+
+        Users users = usersServiceImpl.findById(userId);
+        if (users == null) throw new IllegalArgumentException("User not found");
+        Cart cart = Cart.builder().users(users).build();
+        if (users.getCart() == null) {
+            cartRepository.save(cart);
+            users.setCart(cart);
         }
+        usersService.updateSecurityContext(users);
     }
 
     @Override
     @Transactional
     public void removeCart(String userId) {
-        cartItemServiceImpl.getCartItems("1");
+
         Cart cart = findByUsersId(userId);
         if (cart == null) throw new IllegalArgumentException("Tài khoản chua có giỏ hàng không thể xóa ");
         cartRepository.delete(cart);

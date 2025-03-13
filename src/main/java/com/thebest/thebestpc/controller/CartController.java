@@ -40,6 +40,7 @@ public class CartController {
                 return "view/CartForm";
             }
         }
+
         Users users = (Users) authentication.getPrincipal();
         List<CartItem> cartItems = cartManagerService.mergeCartFromCookie("cart", users.getId());
         model.addAttribute("cartItems", cartItems);

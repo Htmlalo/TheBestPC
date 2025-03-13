@@ -49,6 +49,11 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public Users findById(String userId) {
+      return   usersRepository.findById(userId).orElse(null);
+    }
+
+    @Override
     public void updateSecurityContext(Users users) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
