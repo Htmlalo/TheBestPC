@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
@@ -44,7 +45,7 @@ public class CartController {
         Users users = (Users) authentication.getPrincipal();
         List<CartItem> cartItems = cartManagerService.mergeCartFromCookie("cart", users.getId());
         model.addAttribute("cartItems", cartItems);
-        model.addAttribute("subtotal", cartItems.stream().mapToDouble(item -> item.getProduct().getPrice() * item.getQuantity()).sum());
+        model.addAttribute("subtotal", cartItems.stream().map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add));
         return "view/CartForm";
     }
 }

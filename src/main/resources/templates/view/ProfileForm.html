@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/res/css/Profile.css}">
     <link rel="stylesheet" th:href="@{/res/css/Layout.css}">
+    <link rel="stylesheet" th:href="@{/res/css/Address.css}">
 </head>
 <body>
 <!-- Banner -->
@@ -19,32 +20,7 @@
 <div class="account-container">
     <!-- Sidebar Navigation -->
 
-    <div class="profile-nav">
-        <a href="#" class="nav-item active" data-section="account-info">
-            <i class="fas fa-user"></i>
-            <span>Thông tin tài khoản</span>
-        </a>
-        <a href="#" class="nav-item" data-section="addresses">
-            <i class="fas fa-map-marker-alt"></i>
-            <span>Sổ địa chỉ</span>
-        </a>
-        <a href="#" class="nav-item" data-section="orders">
-            <i class="fas fa-shopping-bag"></i>
-            <span>Quản lý đơn hàng</span>
-        </a>
-        <a href="#" class="nav-item" data-section="viewed">
-            <i class="fas fa-eye"></i>
-            <span>Sản phẩm đã xem</span>
-        </a>
-
-        <a href="#" class="nav-item">
-        <span th:onclick="|window.location.href='logout'|">
-      <i class="fas fa-sign-out-alt"></i>
-      <span>Đăng xuất</span>
-            </span>
-        </a>
-    </div>
-
+    <div th:replace="~{view/fragments/profile/slidebar}"></div>
 
     <!-- Content Area -->
     <div class="content-area">
@@ -88,14 +64,18 @@
 
         <!-- Addresses Section -->
         <div class="content-section" id="addresses" style="display: none;">
+
             <div class="content-header">
                 <h2 class="content-title">Sổ địa chỉ</h2>
-                <button class="btn btn-primary">+ Thêm địa chỉ mới</button>
+                <button class="btn btn-primary" onclick="document.getElementById('addressModal').style.display='block'">
+                    + Thêm địa chỉ mới
+                </button>
             </div>
-            <div class="address-grid">
-                <div class="address-card default">
+            <div  class="address-grid">
+                <div th:each="address :${addressList}" class="address-card default">
                     <span class="default-badge">Mặc định</span>
-                    <p>Xã Ea Kênh, Huyện Krông Pắc, Đắk Lắk, Vietnam</p>
+                    <p><span th:text="${address.ward}"> </span>,<span th:text="${address.street}"> </span> ,<span
+                            th:text="${address.district}"> </span>,<span th:text="${address.city}"></span></p>
                     <div class="address-actions">
                         <button class="btn">Sửa</button>
                         <button class="btn">Xóa</button>
@@ -103,126 +83,85 @@
                 </div>
             </div>
         </div>
-        <!-- New Order Management Section -->
-        <div class="content-section" id="orders" style="display: none;">
-            <div class="content-header">
-                <h2 class="content-title">Quản lý đơn hàng</h2>
-            </div>
+        <!-- Modal thêm địa chỉ mới -->
+        <div id="addressModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Thêm địa chỉ mới</h2>
+                <form th:action="@{/account/add-address}" th:object="${addressDto}" method="post">
 
-            <div class="order-tabs">
-                <button class="order-tab active">TẤT CẢ</button>
-                <button class="order-tab">MỚI</button>
-                <button class="order-tab">ĐANG XỬ LÝ</button>
-                <button class="order-tab">ĐANG VẬN CHUYỂN</button>
-                <button class="order-tab">HOÀN THÀNH</button>
-                <button class="order-tab">HỦY</button>
-            </div>
 
-            <div class="order-search">
-                <input type="text" placeholder="Tìm đơn hàng theo Mã đơn hàng">
-                <button class="search-btn">Tìm đơn hàng</button>
-            </div>
-
-            <!-- Thêm phần hiển thị đơn hàng -->
-            <div class="order-list">
-                <div class="order-card">
-                    <div class="order-header">
-                        <span class="order-date">Ngày đặt hàng: 01/10/2023</span>
-                        <span class="order-status">Trạng thái: Đang vận chuyển</span>
-                        <button class="toggle-order-btn">-</button> <!-- Nút thu nhỏ/mở rộng -->
+                    <div class="form-group">
+                        <label for="city">Thành phố</label>
+                        <input type="text" id="city" th:field="*{city}" required>
                     </div>
-                    <div class="order-body">
-                        <div class="order-items">
-                            <div class="order-item">
-                                <img src="/api/placeholder/80/80" alt="Sản phẩm 1">
-                                <div class="item-info">
-                                    <span class="item-name">Sản phẩm 1</span>
-                                    <span class="item-quantity">Số lượng: 2</span>
-                                    <span class="item-price">Giá: 500.000₫</span>
-                                </div>
-                            </div>
-                            <div class="order-item">
-                                <img src="/api/placeholder/80/80" alt="Sản phẩm 2">
-                                <div class="item-info">
-                                    <span class="item-name">Sản phẩm 2</span>
-                                    <span class="item-quantity">Số lượng: 1</span>
-                                    <span class="item-price">Giá: 300.000₫</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="order-summary">
-                            <span class="total-label">Tổng tiền:</span>
-                            <span class="total-amount">800.000₫</span>
-                        </div>
-                        <div class="order-actions">
-                            <button class="btn btn-primary">Tra cứu đơn hàng</button>
-                        </div>
+                    <div class="form-group">
+                        <label for="district">Quận/Huyện</label>
+                        <input type="text" id="district" th:field="*{district}" required>
                     </div>
-                </div>
-                <!-- Thêm các đơn hàng khác tại đây -->
-            </div>
-
-            <div class="no-orders">
-                <img src="/api/placeholder/120/120" alt="No orders">
-                <p>Quý khách chưa có đơn hàng nào.</p>
-                <a href="#" class="continue-shopping">TIẾP TỤC MUA HÀNG</a>
+                    <div class="form-group">
+                        <label for="street">Đường</label>
+                        <input type="text" id="street" th:field="*{street}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="type">Loại địa chỉ</label>
+                        <select id="type" th:field="*{type}">
+                            <option value="HOME">Nhà riêng</option>
+                            <option value="OFFICE">Văn phòng</option>
+                            <option value="APARTMENT">Văn phòng</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="word">Phường/Xã</label>
+                        <input type="text" id="word" th:field="*{ward}" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Lưu địa chỉ</button>
+                </form>
             </div>
         </div>
-        <!-- Other sections would be added similarly -->
+        <!-- New Order Management Section -->
+        <div th:replace="~{view/OrdersForm}"></div>
     </div>
 </div>
 <div th:replace=" ~{view/fragments/footer :: footer}"></div>
 </body>
 <script th:src="@{/res/js/Layout.js}"></script>
+
 <script>
+    // Get the modal
+    var modal = document.getElementById("addressModal");
+
+    // Get the button that opens the modal
+    var btn = document.querySelector("#addresses .btn.btn-primary");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks the button, open the modal
+    btn.onclick = function () {
+        modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
     document.addEventListener("DOMContentLoaded", function () {
-        const toggleButtons = document.querySelectorAll(".toggle-order-btn");
+        console.log(window.location.hash)
+        if (window.location.hash === "#address") {
 
-        toggleButtons.forEach((button) => {
-            button.addEventListener("click", function () {
-                const orderBody = this.closest(".order-card").querySelector(".order-body");
-                orderBody.classList.toggle("collapsed");
-
-                // Đổi ký hiệu nút
-                if (orderBody.classList.contains("collapsed")) {
-                    this.textContent = "+";
-                } else {
-                    this.textContent = "-";
-                }
-            });
-        });
+            document.getElementById("addresses").style.display = "block";
+            document.getElementById("account-info").style.display = "none";
+        }
     });
-    // Navigation handling
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            e.preventDefault();
+    // Handle form submission
 
-            // Update active state
-            document.querySelectorAll('.nav-item').forEach(nav => {
-                nav.classList.remove('active');
-            });
-            item.classList.add('active');
-
-            // Show corresponding section
-            const sectionId = item.getAttribute('data-section');
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.style.display = 'none';
-            });
-            document.getElementById(sectionId).style.display = 'block';
-
-            // Update banner title
-            const title = item.querySelector('span').textContent;
-            document.querySelector('.welcome-title').textContent = title;
-        });
-
-    });
-    document.querySelectorAll('.order-tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.order-tab').forEach(t => {
-                t.classList.remove('active');
-            });
-            tab.classList.add('active');
-        });
-    });
 </script>
 </html>

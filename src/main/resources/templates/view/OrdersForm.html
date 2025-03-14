@@ -1,0 +1,75 @@
+<link rel="stylesheet" th:href="@{/res/css/Order.css}">
+<form th:object="${userProfile}">
+    <div class="content-section" id="orders" style="display: none;">
+        <div class="content-header">
+            <h2 class="content-title">Quản lý đơn hàng</h2>
+        </div>
+
+        <div class="order-tabs">
+            <button type="button" class="order-tab" th:attr="data-status='ALL'">TẤT CẢ</button>
+            <button type="button" class="order-tab" th:attr="data-status='PENDING'">MỚI</button>
+            <button type="button" class="order-tab" th:attr="data-status='PROCESSING'">ĐANG XỬ LÝ</button>
+            <button type="button" class="order-tab" th:attr="data-status='SHIPPED'">ĐANG VẬN CHUYỂN</button>
+            <button type="button" class="order-tab" th:attr="data-status='DELIVERED'">HOÀN THÀNH</button>
+            <button type="button" class="order-tab" th:attr="data-status='CANCELLED'">HỦY</button>
+        </div>
+
+        <div class="order-search">
+            <input type="text" placeholder="Tìm đơn hàng theo Mã đơn hàng">
+            <button class="search-btn">Tìm đơn hàng</button>
+        </div>
+
+        <!-- Thêm phần hiển thị đơn hàng -->
+
+        <div  class="order-list">
+            <div th:each="order : *{orders}" class="order-card">
+                <div class="order-header">
+                    <span class="order-date">Ngày đặt hàng: <span th:text="${order.createDate}"></span></span>
+                    <span class="order-status">
+                                Trạng thái:
+                                <span th:if="${order.status.ordinal()==0}">Mới</span>
+                                <span th:if="${order.status.ordinal()==1}">Đang Xử lý</span>
+                                <span th:if="${order.status.ordinal()==2}">Đang vận chuyển</span>
+                                <span th:if="${order.status.ordinal()==3}">Hoàn thành</span>
+                                <span th:if="${order.status.ordinal()==4}">Hủy </span>
+                            </span>
+                    <button type="button" class="toggle-order-btn">-</button>
+
+                </div>
+                <div class="order-body">
+                    <div class="order-items">
+                        <div th:each="orderItem :${order.orderItems}" class="order-item">
+                            <img th:src="@{/uploads/{image}(image=${orderItem.product.image})}"
+                                 alt="Sản phẩm 1">
+                            <div class="item-info">
+                                <span class="item-name">Sản phẩm 1</span>
+                                <span class="item-quantity">Số lượng: <span
+                                        th:text="${orderItem.quantity}"></span></span>
+                                <span class="item-price">Giá: <span
+                                        th:text="${orderItem.product.price}"> </span></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="order-summary">
+                        <span class="total-label">Tổng tiền:</span>
+                        <span class="total-amount">
+                                  <span th:text="${#aggregates.sum(order.orderItems.![product.price * quantity])}"></span> VNĐ</span>
+                    </div>
+                    <div class="order-actions">
+                        <button class="btn btn-primary">Tra cứu đơn hàng</button>
+                    </div>
+                </div>
+            </div>
+            <!-- Thêm các đơn hàng khác tại đây -->
+            <div th:if="*{orders.empty}" class="no-orders">
+                <img src="/api/placeholder/120/120" alt="No orders">
+                <p>Quý khách chưa có đơn hàng nào.</p>
+
+            </div>
+        </div>
+
+    </div>
+    <!-- Other sections would be added similarly -->
+</form>
+<script th:src="@{/res/js/ManageOrder.js}"></script>

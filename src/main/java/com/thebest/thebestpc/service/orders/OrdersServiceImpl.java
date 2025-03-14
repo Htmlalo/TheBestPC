@@ -1,5 +1,7 @@
 package com.thebest.thebestpc.service.orders;
 
+import com.thebest.thebestpc.dto.OrderDto;
+import com.thebest.thebestpc.enums.OrderStatus;
 import com.thebest.thebestpc.model.OrderItems;
 import com.thebest.thebestpc.model.Orders;
 import com.thebest.thebestpc.model.Users;
@@ -8,6 +10,9 @@ import com.thebest.thebestpc.repository.OrdersRepository;
 import com.thebest.thebestpc.repository.UsersRepository;
 import com.thebest.thebestpc.service.users.UsersService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OrdersServiceImpl implements OrdersService {
@@ -28,12 +33,21 @@ public class OrdersServiceImpl implements OrdersService {
     public Orders addOrder(String userId) {
         Users users = usersRepository.findById(userId).orElse(null);
         Orders neworders = Orders.builder().users(users).build();
-        Orders orders= ordersRepository.save(neworders);
+        Orders orders = ordersRepository.save(neworders);
         if (users != null) {
             users.getOrders().add(orders);
             usersService.updateSecurityContext(users);
         }
         return orders;
+    }
+
+    @Override
+    public List<OrderDto> getOrdersByStatus(OrderStatus status) {
+
+        if (status == null) return ordersRepository.findAll().stream().map(OrderDto::new).collect(Collectors.toList());
+        return ordersRepository.findByStatus(status).stream()
+                .map(OrderDto::new)
+                .collect(Collectors.toList());
     }
 
     @Override

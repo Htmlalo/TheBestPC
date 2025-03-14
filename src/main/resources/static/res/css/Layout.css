@@ -81,7 +81,7 @@ footer {
     padding: 10px 0;
     display: none;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    z-index: 3;
 
 
 
@@ -170,7 +170,7 @@ header {
     padding: 20px 5%;
     position: sticky;
     top: 0;
-    z-index: 1000;
+    z-index: 3;
 }
 
 nav {
@@ -210,4 +210,5 @@ nav {
 .nav-right a:hover {
     color: #00ff87;
 }
+
 

@@ -30,6 +30,7 @@ public class OrderManagerServiceImpl implements OrderManagerService {
     @Override
     public void addProductFromOrder(String userId, String cartId, ShippingInfo shippingInfo) {
         Orders orders = ordersServiceImpl.addOrder(userId);
+
         List<CartItem> cartItems = cartItemServiceImpl.getCartItems(cartId);
         orderItemServiceImpl.addCartItemToOrdersItem(cartItems, orders);
         cartItemServiceImpl.removeAllCartItem(cartId);

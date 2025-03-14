@@ -14,6 +14,7 @@ import lombok.*;
 public class Address {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @ManyToOne
@@ -32,8 +33,6 @@ public class Address {
     @Column(nullable = false, columnDefinition = "nvarchar(31)")
     private String city;
 
-    @Column(columnDefinition = "nvarchar(255)")
-    private String note;
 
     @Column(nullable = false)
     @Builder.Default

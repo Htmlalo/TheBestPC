@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.math.BigDecimal;
 import java.util.Set;
 
 @Builder
@@ -24,7 +25,7 @@ public class Product {
 
     String description;
 
-    double price;
+    BigDecimal price;
 
     String image;
 
