@@ -23,11 +23,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final CustomSuccessHandler customSuccessHandler;
-
-    public SecurityConfig(CustomSuccessHandler customSuccessHandler) {
-        this.customSuccessHandler = customSuccessHandler;
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -36,7 +31,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, UsersService usersService, CustomUserDetailsService customUserDetailsService, CustomFailHandler customFailHandler) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, CustomFailHandler customFailHandler) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
 
@@ -44,7 +39,7 @@ public class SecurityConfig {
         http.formLogin(login -> {
             login.loginPage("/login");
             login.loginProcessingUrl("/p/login");
-            login.defaultSuccessUrl("/banner");
+            login.defaultSuccessUrl("/banner",true);
             login.failureHandler(customFailHandler);
             login.permitAll();
         });
@@ -63,6 +58,7 @@ public class SecurityConfig {
             auth.requestMatchers("/res/**").permitAll();
             auth.requestMatchers("/uploads/**").permitAll();
             auth.requestMatchers("/cart/**").permitAll();
+            auth.requestMatchers("/register/**").permitAll();
             auth.anyRequest().authenticated();
         });
 
@@ -76,7 +72,6 @@ public class SecurityConfig {
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         provider.setHideUserNotFoundExceptions(false);
-
         return new ProviderManager(provider);
     }
 

@@ -4,14 +4,11 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -24,15 +21,16 @@ public class CustomFailHandler implements AuthenticationFailureHandler {
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         log.error(exception.getMessage());
         log.error(exception.getClass().getName());
-        if (exception instanceof UsernameNotFoundException) {
-           response.sendRedirect("/TheBestPc/login?error=1");
-        }
-        if (exception instanceof BadCredentialsException){
-            response.sendRedirect("/TheBestPc/login?error=2");
-        }
-        if (exception instanceof DisabledException){
-            response.sendRedirect("/TheBestPc/login?error=3");
-        }
 
+        int error = 0;
+        switch (exception) {
+            case UsernameNotFoundException ignored -> error = -1;
+            case BadCredentialsException ignored -> error = 1;
+            case DisabledException ignored -> error = -2;
+            default -> {
+            }
+        }
+        request.setAttribute("error", error);
+        request.getRequestDispatcher("/login").forward(request, response);
     }
 }

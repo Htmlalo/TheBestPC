@@ -32,20 +32,26 @@ public class CartController {
 
     @GetMapping
     public String cartView(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication instanceof AnonymousAuthenticationToken) {
 
 
-            if (cookieService.getCookie("cart") != null) {
-                model.addAttribute("cartItems", cartItemService.getCartItemsFromCookie("cart"));
-                return "view/CartForm";
+                if (cookieService.getCookie("cart") != null) {
+                    model.addAttribute("cartItems", cartItemService.getCartItemsFromCookie("cart"));
+                    return "view/CartForm";
+                }
             }
-        }
 
-        Users users = (Users) authentication.getPrincipal();
-        List<CartItem> cartItems = cartManagerService.mergeCartFromCookie("cart", users.getId());
-        model.addAttribute("cartItems", cartItems);
-        model.addAttribute("subtotal", cartItems.stream().map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add));
-        return "view/CartForm";
+            Users users = (Users) authentication.getPrincipal();
+            List<CartItem> cartItems = cartManagerService.mergeCartFromCookie("cart", users.getId());
+            model.addAttribute("cartItems", cartItems);
+            model.addAttribute("subtotal", cartItems.stream().map(item -> item.getProduct().getPrice().multiply(BigDecimal.valueOf(item.getQuantity()))).reduce(BigDecimal.ZERO, BigDecimal::add));
+
+            return "view/CartForm";
+        } catch (Exception e) {
+            model.addAttribute("error",e.getMessage());
+            return "view/CartForm";
+        }
     }
 }

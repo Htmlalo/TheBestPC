@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Set;
 
 @Builder
@@ -21,8 +22,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
 
+    @Column(nullable = false, columnDefinition = "nvarchar(225)")
     String name;
 
+    @Column(nullable = false, columnDefinition = "nvarchar(max)")
     String description;
 
     BigDecimal price;
@@ -30,6 +33,9 @@ public class Product {
     String image;
 
     int stock;
+
+    @Builder.Default
+    Date createAt = new Date();
 
     @ManyToOne
     @JoinColumn(name = "categories_id", referencedColumnName = "id")

@@ -34,6 +34,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> findTop5ProductCreateAt() {
+        return productRepository.getTop5Product();
+    }
+
+    @Override
     public Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Error: can't find product"));
     }

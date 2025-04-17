@@ -10,9 +10,12 @@
 </head>
 <body>
 <div th:replace=" ~{view/fragments/header :: header}"></div>
-
+<div th:replace=" ~{view/fragments/notification :: success-notification}"></div>
 <!-- Product Detail Section -->
 <div th:object="${product}" class="product-container">
+    <div th:replace=" ~{view/fragments/notification :: notification-styles}"></div>
+    <div th:replace=" ~{view/fragments/notification :: success-notification}"></div>
+    <div th:replace=" ~{view/fragments/notification :: error-notification}"></div>
     <form th:action="@{/detail/addCart/{id}(id=${product.id})}" method="post" >
     <div class="product-grid">
         <!-- Product Images -->
@@ -92,6 +95,7 @@
 <div th:replace=" ~{view/fragments/footer :: footer}"></div>
 </body>
 <script th:src="@{/res/js/Layout.js}"></script>
+<div th:replace=" ~{view/fragments/notification :: notification-script}"></div>
 <script>
     function showConfig() {
         document.getElementById('configModal').style.display = 'block';

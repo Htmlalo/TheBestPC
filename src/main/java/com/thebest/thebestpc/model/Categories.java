@@ -18,6 +18,7 @@ public class Categories {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     Long id;
+    @Column(nullable = false, columnDefinition = "nvarchar(225)")
     String name;
 
     @OneToMany(mappedBy = "categories")

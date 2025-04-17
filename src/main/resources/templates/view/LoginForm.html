@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TB PC STORE - Đăng nhập/Đăng ký</title>
-    <style th:replace="~{view/fragments/notification ::notification-styles}"></style>
+
+
     <style>
         * {
             margin: 0;
@@ -175,34 +176,44 @@
             }
         }
     </style>
+
 </head>
+
 <body>
 <div class="container">
+    <div th:replace=" ~{view/fragments/notification :: notification-styles}"></div>
+    <div th:replace=" ~{view/fragments/notification :: success-notification}"></div>
     <div class="forms-container">
-
-        <div th:fragment="error-notification" th:if="${param.error != null}">
+        <div th:if="${error}">
             <div id="errorNotification" class="tb-notification tb-error">
                 <div class="tb-notification-content">
                     <i class="fas fa-exclamation-circle"></i>
-                    <span th:if="${param.error[0] == '1'}" th:text="'Email không tồn tại'">Operation failed!</span>
-
+                    <span th:switch="${error}">
+                <span th:case="'1'">Sai mật khẩu hoặc tài khoản</span>
+                <span th:case="'-1'">Tài khoản không tìm thấy</span>
+                <span th:case="'-2'">Tài khoản bị khóa</span>
+                <span th:case="*" th:text="${error}"></span>
+            </span>
                 </div>
                 <button class="tb-close-btn" onclick="closeNotification('errorNotification')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
         </div>
+
+
+
         <div class="signin-signup">
             <!-- Đăng nhập form -->
-            <form th:action="@{p/login}"  method="post" class="sign-in-form" id="login-form">
+            <form th:action="@{/p/login}" method="post" class="sign-in-form" id="login-form">
                 <h2 class="title">Đăng nhập</h2>
                 <div class="input-field">
-                    <input type="email" name="username" placeholder="Email" required>
+                    <input id="username-login" type="email" name="username"  placeholder="Email" required>
                 </div>
                 <div class="input-field">
-                    <input type="password" name="password" placeholder="Mật khẩu" required>
+                    <input id="password-login" type="password" name="password" placeholder="Mật khẩu" required>
                 </div>
-                <input type="submit" value="Đăng nhập" class="btn">
+                <input type="submit" value="Đăng nhập" class="btn" id="button-login">
                 <p class="social-text">Hoặc đăng nhập với</p>
                 <div class="social-media">
                     <a href="#" class="social-icon">
@@ -212,18 +223,18 @@
             </form>
 
             <!-- Đăng ký form -->
-            <form action="http://localhost:9090/TheBestPc/register" class="sign-up-form" id="register-form">
+            <form th:action="@{/register}" method="post" class="sign-up-form" id="register-form">
                 <h2 class="title">Đăng ký</h2>
                 <div class="input-field">
-                    <input type="text" name="fullName"  placeholder="Họ và tên" required>
+                    <input id="username-register" type="text" name="fullName"  placeholder="Họ và tên" required>
                 </div>
                 <div class="input-field">
-                    <input type="email" name="email" placeholder="Email" required>
+                    <input id="email-register" type="email" name="email" placeholder="Email" required>
                 </div>
                 <div class="input-field">
-                    <input type="password" name="password" placeholder="Mật khẩu" required>
+                    <input id="password-register" type="password" name="password" placeholder="Mật khẩu" required>
                 </div>
-                <input type="submit" value="Đăng ký" class="btn">
+                <input type="submit" value="Đăng ký" class="btn" id="button-register">
                 <p class="social-text">Hoặc đăng ký với</p>
                 <div class="social-media">
                     <a href="#" class="social-icon">
@@ -240,7 +251,7 @@
         </button>
     </div>
 </div>
-<script th:src="@{/res/js/Layout.js}"></script>
+<div th:replace=" ~{view/fragments/notification :: notification-script}"></div>
 <script>
     function toggleForms() {
         const loginForm = document.getElementById('login-form');
@@ -258,62 +269,9 @@
         }
     }
 
-    // Xử lý form đăng nhập
-    // document.querySelector('.sign-in-form').addEventListener('submit', function (e) {
-    //     e.preventDefault();
-    //     // Xử lý logic đăng nhập ở đây
-    // });
 
     // Xử lý form đăng ký
-    document.querySelector('.sign-up-form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        // Xử lý logic đăng ký ở đây
 
-        let fromData = new FormData(this);
-        let fullName = fromData.get('fullName');
-        let password = fromData.get('password');
-        let email = fromData.get('email');
-        console.log(fullName, password, email);
-        fetch("http://localhost:9090/TheBestPc/register", {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email,
-                password: password,
-                fullName: fullName
-            })
-        }).then(response => response.json()
-        ).then(
-            data => {
-                if (data.status.code !== 200) {
-                    alert(data.status.message);
-                } else {
-                    window.location.href = "TheBestPc/login";
-                }
-            }
-        );
-    });
-    document.addEventListener('DOMContentLoaded', function() {
-        // Automatically close notifications after 5 seconds
-        const notifications = document.querySelectorAll('.tb-notification');
-        notifications.forEach(notification => {
-            setTimeout(() => {
-                closeNotification(notification.id);
-            }, 5000);
-        });
-    });
-
-    function closeNotification(notificationId) {
-        const notification = document.getElementById(notificationId);
-        if (notification) {
-            notification.classList.add('hiding');
-            setTimeout(() => {
-                notification.remove();
-            }, 500);
-        }
-    }
 </script>
 </body>
 </html>

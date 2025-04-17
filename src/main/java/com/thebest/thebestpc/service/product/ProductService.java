@@ -12,5 +12,6 @@ public interface ProductService {
     void addProduct(Product product);
 
     List<Product> findAllProducts();
+    List<Product> findTop5ProductCreateAt();
     Product findById(Long id);
 }

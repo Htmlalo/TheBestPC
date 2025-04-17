@@ -16,10 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Slf4j
 @Controller
@@ -35,21 +33,34 @@ public class DetailController {
     CartManagerService cartManagerService;
 
     @GetMapping("{id}")
-    public String detailProduct(@PathVariable Long id, Model model) {
-        model.addAttribute("product", productService.findById(id));
-        return "view/DetailForm";
+    public String ddetailPage(@PathVariable Long id,
+                              @RequestParam(required = false) String success,
+                              @RequestParam(required = false) String error,
+                              Model model) {
+        model.addAttribute("success", success);
+        model.addAttribute("error", error);
+        model.addAttribute("product" ,productService.findById(id));
+        // load data khác...
+        return  "view/DetailForm";
     }
 
     @PostMapping("addCart/{id}")
-    public String addCart(@PathVariable Long id) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication instanceof AnonymousAuthenticationToken) {
-            cartItemService.addOrUpdateCartItemToCookie("cart", new CartCookieDto(id, 1));
+    public String addCart(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication instanceof AnonymousAuthenticationToken) {
+                cartItemService.addOrUpdateCartItemToCookie("cart", new CartCookieDto(id, 1));
+                redirectAttributes.addAttribute("success", "Thêm vào giỏ hàng thành công");
+                return "redirect:/detail/" + id;
+            }
+            Users users = (Users) authentication.getPrincipal();
+            redirectAttributes.addAttribute("success", "Thêm vào giỏ hàng thành công");
+            cartManagerService.addProductToCart(users.getId(), id);
+
+            return "redirect:/detail/" + id;
+        } catch (Exception e) {
+            redirectAttributes.addAttribute("error", "Thêm vào giỏ hàng không thành công");
             return "redirect:/detail/" + id;
         }
-        Users users = (Users) authentication.getPrincipal();
-        cartManagerService.addProductToCart(users.getId(), id);
-
-        return "redirect:/detail/" + id;
     }
 }

@@ -23,13 +23,13 @@ public class UsersServiceImpl implements UsersService {
     private final UserMapper userMapper;
 
     @Override
-    public Users createNewUser(RegisterUserDto dto) {
+    public void createNewUser(RegisterUserDto dto) {
         if (usersRepository.existsByEmail(dto.getEmail()))
-            throw new IllegalArgumentException("Email:" + dto.getEmail() + " Đã tồn tại");
+            throw new IllegalArgumentException("Email đã được sử dụng");
 
         Users users = userMapper.mapToEntity(dto);
         users.setPassword(passwordEncoder.encode(dto.getPassword()));
-        return usersRepository.save(users);
+        usersRepository.save(users);
     }
 
     @Override

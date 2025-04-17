@@ -30,6 +30,7 @@ public class Users implements UserDetails {
     String email;
     String password;
 
+    @Column(nullable = false, columnDefinition = "nvarchar(225)")
     String fullName;
     String phone;
     Boolean gender;
